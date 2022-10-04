@@ -21,7 +21,7 @@ export default class Profile extends React.Component {
         this.getProfilePicture = this.getProfilePicture.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.getProfilePicture();
         this.getUser();
     }

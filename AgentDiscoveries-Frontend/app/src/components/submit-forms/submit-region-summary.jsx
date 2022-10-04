@@ -24,7 +24,7 @@ export default class RegionSummarySubmit extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         apiGet('regions')
             .then(results => this.setState({ regions: results }))
             .catch(() => this.addMessage('Error fetching regions, please try again later', 'danger'));

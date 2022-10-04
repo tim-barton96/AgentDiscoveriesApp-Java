@@ -17,11 +17,11 @@ export default class NavigationBar extends React.Component {
         this.handleLogOut = this.handleLogOut.bind(this);
     }
 
-    componentDidMount() {
+    UNSAFE_componentDidMount() {
         window.addEventListener('login', this.onLoginEvent);
     }
 
-    componentWillUnmount() {
+    UNSAFE_componentWillUnmount() {
         window.removeEventListener('login', this.onLoginEvent);
     }
 

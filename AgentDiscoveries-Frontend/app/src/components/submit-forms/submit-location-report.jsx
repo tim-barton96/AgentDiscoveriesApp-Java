@@ -26,7 +26,7 @@ export default class LocationReportSubmit extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         apiGet('locations')
             .then(results => this.setState({ locations: results }))
             .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));

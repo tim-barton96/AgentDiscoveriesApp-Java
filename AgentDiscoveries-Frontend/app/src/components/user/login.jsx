@@ -40,7 +40,7 @@ export default class Login extends React.Component {
         );
     }
 
-    componentWillMount () {
+    UNSAFE_componentWillMount () {
         if (UserHelper.isLoggedIn()) {
             window.location.hash = '#/message';
         }
