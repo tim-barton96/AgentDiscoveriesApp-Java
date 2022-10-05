@@ -65,7 +65,7 @@ Alternatively, you can serve the frontend using a development server:
 ### Frontend Development Server
 
 To speed up front end development, there is a dev server you can run instead.
-
+?useSSL=false
 To use this from the command line, run `mvn clean package -Ddev`
 To use this, setup a `Maven` configuration with the working directory set to the `AgentDiscoveries-Frontend` project.
 For the Command Line option, add `clean package -Ddev`.
