@@ -1,6 +1,15 @@
 # Agent discoveries Application on GitPod
 
 ## GitPod setup instructions
+- A load of instructions here
+- asdasd
+- asdasd
+- asdasd
+- asdasd
+- asdasd
+- asdasd
+- asdasd
+
 - Use `mysql` in the terminal to open a mysql shell inside the docker container
 - Create a new datase in the terminal called `agentdiscoveries`
 - Change the password for your sql instance with `ALTER USER 'username'@'localhost' IDENTIFIED BY 'new-password-here'`
