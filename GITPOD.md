@@ -7,3 +7,12 @@
 - Change the connection credentials in the `config.properties` file (you will need to change the `database.username` and `database.password`)
 - In order to query the database manually in the terminal, you will need to connect with `mysql --host=localhost --user=<username> --password=<password> agentdiscoveries`. This will open a new shell inside your database
 - Finally, run `mvn clean package` followed by `java -jar AgentDiscoveries-Backend/target/agentdiscoveries-backend-1.0-SNAPSHOT.jar` to launch the application.
+
+
+# Test Section
+- Alter the same file
+- Alter the same file
+- Alter the same file
+- Alter the same file
+- Alter the same file
+- Alter the same file
