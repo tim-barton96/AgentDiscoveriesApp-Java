@@ -30,8 +30,9 @@ export default class LocationForm extends React.Component {
         this.onLatitudeChange = this.onLatitudeChange.bind(this);
         this.onLongitudeChange = this.onLongitudeChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.validateLatitude = this.validateLatitude.bind(this);
-        this.validateLongitude = this.validateLongitude.bind(this);
+        this.handleUserInput = this.handleUserInput.bind(this);
+        this.validateField = this.validateField.bind(this);
+        this.validateForm = this.validateForm.bind(this);
         
 
         // In edit mode, the ID of the location is passed in through props
@@ -82,15 +83,15 @@ export default class LocationForm extends React.Component {
                                 name='longitude'
                                 placeholder='Enter longitude'
                                 value={this.state.longitude}
-                                onChange={this.onLocationChange}/>
+                                onChange={this.handleUserInput}/>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Latitude</ControlLabel>
                             <FormControl type='number' required
-                                name='longitude'
+                                name='latitude'
                                 placeholder='Enter latitude'
                                 value={this.state.latitude}
-                                onChange={this.onLatitudeChange}/>
+                                onChange={this.handleUserInput}/>
                         </FormGroup>
                         <Button type='submit'>Submit</Button>
                     </Form>
@@ -116,15 +117,11 @@ export default class LocationForm extends React.Component {
     }
 
     onLongitudeChange(event) {
-        //const longi = event.target.longitude;
         this.setState({ longitude: parseFloat(event.target.value) });
-        // this.setState({[longi]: () => validateLongitude(longi)});
     }
 
     onLatitudeChange(event) {
-        //const lati = event.target.latitude;
         this.setState({ latitude: parseFloat(event.target.value) });
-        //this.setState({validateLatitude(lati)});
     }
 
     handleUserInput(event) {
@@ -136,17 +133,17 @@ export default class LocationForm extends React.Component {
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let longValid = this.longValid;
-        let latValid = this.latValid;
+        let longValid = this.state.longValid;
+        let latValid = this.state.latValid;
 
         switch(fieldName) {
             case 'longitude':
                 longValid = value.match(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$/);
-                fieldValidationErrors.longitude = longValid ? '' : ' Longitude must be between -180 and 180 and can only contain up to 6 decimal places';
+                fieldValidationErrors.lon = longValid ? '' : ' Longitude must be between -180 and 180 and can only contain up to 6 decimal places';
                 break;
             case 'latitude':
                 latValid = value.match(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,10})$/);
-                fieldValidationErrors.latitude = latValid ? '' : ' Latitude must be between -90 and 90 and can only contain up to 6 decimal places';
+                fieldValidationErrors.lat = latValid ? '' : ' Latitude must be between -90 and 90 and can only contain up to 6 decimal places';
                 break;
             default:
                 break;
