@@ -3,6 +3,9 @@ import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstra
 import {apiGet, apiPost, apiPut} from '../utilities/request-helper';
 import Message from '../message';
 
+const longValidator =/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$/;
+const latValidator =/^-?([0-8]?[0-9]|90)(\.[0-9]{1,10})$/;
+
 export default class LocationForm extends React.Component {
     constructor(props) {
         super(props);
@@ -12,6 +15,10 @@ export default class LocationForm extends React.Component {
             location: '',
             timeZone: '',
             regionId: '',
+            longitude: '',
+            latitude: '',
+            longValid: false,
+            latValid: false,
 
             message: {}
         };
@@ -20,7 +27,12 @@ export default class LocationForm extends React.Component {
         this.onLocationChange = this.onLocationChange.bind(this);
         this.onTimeZoneChange = this.onTimeZoneChange.bind(this);
         this.onRegionIdChange = this.onRegionIdChange.bind(this);
+        this.onLatitudeChange = this.onLatitudeChange.bind(this);
+        this.onLongitudeChange = this.onLongitudeChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.validateLatitude = this.validateLatitude.bind(this);
+        this.validateLongitude = this.validateLongitude.bind(this);
+        
 
         // In edit mode, the ID of the location is passed in through props
         if (this.props.id) {
@@ -64,6 +76,20 @@ export default class LocationForm extends React.Component {
                                 value={this.state.regionId}
                                 onChange={this.onRegionIdChange}/>
                         </FormGroup>
+                        <FormGroup>
+                            <ControlLabel>Longitude</ControlLabel>
+                            <FormControl type='number' required
+                                placeholder='Enter longitude'
+                                value={this.state.longitude}
+                                onChange={this.onLongitudeChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <ControlLabel>Latitude</ControlLabel>
+                            <FormControl type='number' required
+                                placeholder='Enter latitude'
+                                value={this.state.latitude}
+                                onChange={this.onLatitudeChange}/>
+                        </FormGroup>
                         <Button type='submit'>Submit</Button>
                     </Form>
                 </div>
@@ -87,6 +113,44 @@ export default class LocationForm extends React.Component {
         this.setState({ regionId: parseInt(event.target.value) });
     }
 
+    onLongitudeChange(event) {
+        const longi = event.target.longitude;
+        // this.setState({ longitude: parseFloat(event.target.value) });
+        this.setState({[longi]: () => validateLongitude(longi)});
+    }
+
+    onLatitudeChange(event) {
+        const lati = event.target.latitude;
+        // this.setState({ latitude: parseFloat(event.target.value) });
+        this.setState({[lati]: () => this.validateLatitude(lati)});
+    }
+
+    validateLongitude() {
+        let longError = "";
+        const value = this.state.longitude;
+        if (value.trim === "") longError = "Enter Longitude";
+        else if (!longValidator.test(value))
+            longError = "Longitude must be between -180 and 180 and contain up to 6 decimal places";
+
+        this.setState({
+            longError
+        });
+        return longError;
+    }
+
+    validateLatitude() {
+        let latError = "";
+        const value = this.state.latitude;
+        if (value.trim === "") latError = "Enter Latitude";
+        else if (!latValidator.test(value))
+            latError = "Latitude must be between -90 and 90 and contain up to 6 decimal places";
+
+        this.setState({
+            latError
+        });
+        return latError;
+    }
+    
     onSubmit(event) {
         event.preventDefault();
 
@@ -94,7 +158,9 @@ export default class LocationForm extends React.Component {
             siteName: this.state.siteName,
             location: this.state.location,
             timeZone: this.state.timeZone,
-            regionId: this.state.regionId ? this.state.regionId : null
+            regionId: this.state.regionId ? this.state.regionId : null,
+            longitude: this.state.longitude,
+            latitude: this.state.latitude
         };
 
         const request = this.props.id

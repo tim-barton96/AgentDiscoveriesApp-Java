@@ -7,6 +7,8 @@ public class Location {
     private String location;
     private String timeZone;
     private Integer regionId; // Nullable
+    private float longitude;
+    private float latitude;
 
     public int getLocationId() {
         return locationId;
@@ -46,5 +48,21 @@ public class Location {
 
     public void setRegionId(Integer regionId) {
         this.regionId = regionId;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude() {
+        this.longitude = longitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude() {
+        this.latitude = latitude;
     }
 }
