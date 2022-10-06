@@ -34,7 +34,7 @@ public class LocationsDao {
     public int createLocation(Location location) {
         try (Handle handle = jdbi.open()) {
             return handle.createUpdate("INSERT INTO locations (location, site_name, time_zone, region_id, longitude, latitude) " +
-                    "VALUES (:location, :site_name, :time_zone, :region_id, :longitude, latitude)")
+                    "VALUES (:location, :site_name, :time_zone, :region_id, :longitude, :latitude)")
                     .bind("location", location.getLocation())
                     .bind("site_name", location.getSiteName())
                     .bind("time_zone", location.getTimeZone())

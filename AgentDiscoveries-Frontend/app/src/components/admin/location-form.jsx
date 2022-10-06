@@ -3,8 +3,6 @@ import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstra
 import {apiGet, apiPost, apiPut} from '../utilities/request-helper';
 import Message from '../message';
 
-const longValidator =/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$/;
-const latValidator =/^-?([0-8]?[0-9]|90)(\.[0-9]{1,10})$/;
 
 export default class LocationForm extends React.Component {
     constructor(props) {
@@ -19,6 +17,8 @@ export default class LocationForm extends React.Component {
             latitude: '',
             longValid: false,
             latValid: false,
+            formValid: false,
+            formErrors: {lat: '', lon: ''},
 
             message: {}
         };
@@ -79,13 +79,15 @@ export default class LocationForm extends React.Component {
                         <FormGroup>
                             <ControlLabel>Longitude</ControlLabel>
                             <FormControl type='number' required
+                                name='longitude'
                                 placeholder='Enter longitude'
                                 value={this.state.longitude}
-                                onChange={this.onLongitudeChange}/>
+                                onChange={this.onLocationChange}/>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Latitude</ControlLabel>
                             <FormControl type='number' required
+                                name='longitude'
                                 placeholder='Enter latitude'
                                 value={this.state.latitude}
                                 onChange={this.onLatitudeChange}/>
@@ -114,41 +116,49 @@ export default class LocationForm extends React.Component {
     }
 
     onLongitudeChange(event) {
-        const longi = event.target.longitude;
-        // this.setState({ longitude: parseFloat(event.target.value) });
-        this.setState({[longi]: () => validateLongitude(longi)});
+        //const longi = event.target.longitude;
+        this.setState({ longitude: parseFloat(event.target.value) });
+        // this.setState({[longi]: () => validateLongitude(longi)});
     }
 
     onLatitudeChange(event) {
-        const lati = event.target.latitude;
-        // this.setState({ latitude: parseFloat(event.target.value) });
-        this.setState({[lati]: () => this.validateLatitude(lati)});
+        //const lati = event.target.latitude;
+        this.setState({ latitude: parseFloat(event.target.value) });
+        //this.setState({validateLatitude(lati)});
     }
 
-    validateLongitude() {
-        let longError = "";
-        const value = this.state.longitude;
-        if (value.trim === "") longError = "Enter Longitude";
-        else if (!longValidator.test(value))
-            longError = "Longitude must be between -180 and 180 and contain up to 6 decimal places";
-
-        this.setState({
-            longError
-        });
-        return longError;
+    handleUserInput(event) {
+        const name = event.target.name;
+        const value = event.target.value;
+        this.setState({[name]: value},
+            () => this.validateField(name, value));
     }
 
-    validateLatitude() {
-        let latError = "";
-        const value = this.state.latitude;
-        if (value.trim === "") latError = "Enter Latitude";
-        else if (!latValidator.test(value))
-            latError = "Latitude must be between -90 and 90 and contain up to 6 decimal places";
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let longValid = this.longValid;
+        let latValid = this.latValid;
 
-        this.setState({
-            latError
-        });
-        return latError;
+        switch(fieldName) {
+            case 'longitude':
+                longValid = value.match(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$/);
+                fieldValidationErrors.longitude = longValid ? '' : ' Longitude must be between -180 and 180 and can only contain up to 6 decimal places';
+                break;
+            case 'latitude':
+                latValid = value.match(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,10})$/);
+                fieldValidationErrors.latitude = latValid ? '' : ' Latitude must be between -90 and 90 and can only contain up to 6 decimal places';
+                break;
+            default:
+                break;
+        }
+        this.setState({formErrors: fieldValidationErrors,
+            longValid: longValid,
+            latValid: latValid},
+        this.validateForm);
+    }
+
+    validateForm() {
+        this.setState({formValid: this.state.longValid && this.state.latValid});
     }
     
     onSubmit(event) {
