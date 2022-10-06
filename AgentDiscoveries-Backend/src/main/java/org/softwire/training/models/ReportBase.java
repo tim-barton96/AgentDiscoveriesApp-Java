@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class ReportBase {
 
     private int reportId;
-    private byte status;
+    private int status;
     private LocalDateTime reportTime; // Always UTC in the DB
     private String reportBody;
     private int agentId;
@@ -18,11 +18,14 @@ public class ReportBase {
         this.reportId = reportId;
     }
 
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
+        if(status < 0 || status > 100) {
+            throw new IllegalArgumentException(status + "is not a valid status.");
+        }
         this.status = status;
     }
 
