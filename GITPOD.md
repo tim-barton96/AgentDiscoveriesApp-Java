@@ -9,5 +9,3 @@
 - Finally, run `mvn clean package` followed by `java -jar AgentDiscoveries-Backend/target/agentdiscoveries-backend-1.0-SNAPSHOT.jar` to launch the application.
 
 
-
-// disabled={!this.state.formValid}

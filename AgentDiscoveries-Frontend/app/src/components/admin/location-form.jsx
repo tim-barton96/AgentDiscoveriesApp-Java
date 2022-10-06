@@ -81,7 +81,7 @@ export default class LocationForm extends React.Component {
                             <ControlLabel>Longitude</ControlLabel>
                             <FormControl type='number' required
                                 name='longitude'
-                                placeholder='Enter longitude'
+                                placeholder='Enter longitude (Must be between -180 and 180 with at least 1 decimal place)'
                                 value={this.state.longitude}
                                 onChange={this.handleUserInput}/>
                         </FormGroup>
@@ -89,11 +89,11 @@ export default class LocationForm extends React.Component {
                             <ControlLabel>Latitude</ControlLabel>
                             <FormControl type='number' required
                                 name='latitude'
-                                placeholder='Enter latitude'
+                                placeholder='Enter latitude (Must be between -90 and 90 with at least 1 decimal place)'
                                 value={this.state.latitude}
                                 onChange={this.handleUserInput}/>
                         </FormGroup>
-                        <Button type='submit'>Submit</Button>
+                        <Button type='submit' disabled={!this.state.formValid}>Submit</Button>
                     </Form>
                 </div>
             </div>
@@ -143,7 +143,7 @@ export default class LocationForm extends React.Component {
                 break;
             case 'latitude':
                 latValid = value.match(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,10})$/);
-                fieldValidationErrors.lat = latValid ? '' : ' Latitude must be between -90 and 90 and can only contain up to 6 decimal places';
+                fieldValidationErrors.lat = latValid ? '' : this.setState({ message: 'Latitude wrong'});
                 break;
             default:
                 break;
