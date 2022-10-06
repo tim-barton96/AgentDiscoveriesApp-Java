@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Button, Checkbox, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import {apiGet, apiPost} from '../utilities/request-helper';
 import {Messages} from '../message';
+import {isAdmin, isLoggedIn} from './utilities/user-helper';
 
 
 export default class LocationReportSubmit extends React.Component {
@@ -18,6 +19,8 @@ export default class LocationReportSubmit extends React.Component {
 
             messages: []
         };
+        this.onLogInEvent = this.onLogInEvent.bind(this);
+        this.handleLogOut = this.onLogInEvent.bind(this);
 
         this.onLocationChange = this.onLocationChange.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
@@ -31,8 +34,24 @@ export default class LocationReportSubmit extends React.Component {
             .then(results => this.setState({ locations: results }))
             .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));
     }
+    componentDidMount(){
+        window.addEventListener('login',this.onLogInEvent);
+    }
+    componentWillUnmount(){
+        window.addEventListener('login',this.onLogInEvent);
+    }
+    onLogInEvent(){
+        this.setState({
+            isLoggedIn: isLoggedIn(),
+            isAdmin: isAdmin()
 
-    render() {
+        });
+    }
+
+    //{this.state.isLoggedIn ? this.renderLoggedIn(): null}
+    //{this.state.isAdmin ? this.renderLoggedIn(): null}
+    
+    renderLoggedInAgent() {
         return (
             <div className='col-md-8 col-md-offset-2'>
                 <Form onSubmit={this.onSubmit}>
