@@ -53,7 +53,7 @@ export default class App extends React.Component {
                     <Switch>
                         <Route path='/' exact render={() => <Page><Home /></Page>} />
                         <Route path='/login' render={() => <Page><Login /></Page>} />
-                        {this.state.isLoggedIn ? this.renderLoggedIn(): null}
+                        {this.state.isLoggedIn && this.renderLoggedIn()}
 
                         <Route path='/error' render={() => <Page><Error/></Page>}/>
                         <Route render={() => <Page><Error/></Page>}/>
