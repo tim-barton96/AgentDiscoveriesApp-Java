@@ -16,7 +16,7 @@ export default class LocationForm extends React.Component {
             latitude: '',
             longValid: false,
             latValid: false,
-            // siteValid: false,
+            siteValid: false,
             locationValid: false,
             timeZoneValid: false,
             formValid: false,
@@ -58,7 +58,7 @@ export default class LocationForm extends React.Component {
                                 name='siteName'
                                 placeholder='Enter site name'
                                 value={this.state.siteName}
-                                onChange={this.onSiteChange}/>
+                                onChange={this.handleUserInput}/>
                         </FormGroup>
                         <div className='col-md-12'>{this.state.formErrors.site}</div>
                         <FormGroup>
@@ -147,15 +147,15 @@ export default class LocationForm extends React.Component {
         let fieldValidationErrors = this.state.formErrors;
         let longValid = this.state.longValid;
         let latValid = this.state.latValid;
-        // let siteValid = this.state.siteValid;
+        let siteValid = this.state.siteValid;
         let locationValid = this.state.locationValid;
         let timeZoneValid = this.state.timeZoneValid;
 
         switch(fieldName) {
-            // case 'siteName':
-            //     siteValid = value.lenth > 0;
-            //     fieldValidationErrors.site = siteValid ? '' : 'Site name connot be empty';
-            //     break;
+            case 'siteName':
+                siteValid = value.length > 0;
+                fieldValidationErrors.site = siteValid ? '' : 'Site name connot be empty';
+                break;
             case 'longitude':
                 longValid = value.match(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,6})$/);
                 fieldValidationErrors.lon = longValid ? '' : 'Longitude must be between -180 and 180 with at least 1 and up to 6 decimal places';
@@ -179,14 +179,14 @@ export default class LocationForm extends React.Component {
             longValid: longValid,
             latValid: latValid,
             locationValid: locationValid,
-            // siteValid: siteValid,
+            siteValid: siteValid,
             timeZoneValid: timeZoneValid},
         this.validateForm);
     }
 
     validateForm() {
-        this.setState({formValid: this.state.longValid && this.state.latValid && this.state.locationValid && this.state.timeZoneValid});
-    } // this.state.siteValid &&
+        this.setState({formValid: this.state.longValid && this.state.latValid && this.state.locationValid && this.state.siteValid && this.state.timeZoneValid});
+    } 
 
     errorClass(error) {
         return(error.length === 0 ? '' : 'has-error');
