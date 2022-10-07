@@ -59,6 +59,16 @@ export default class LocationReportSubmit extends React.Component {
                             onChange={this.onStatusChange}
                             id="status-input"/>
                     </FormGroup>
+
+                    <FormGroup>
+                        <ControlLabel>Title</ControlLabel>
+                        <FormControl type='text' required
+                            componentClass='textarea' rows={1}
+                            placeholder='Write title'
+                            value={this.state.reportTitle}
+                            onChange={this.onReportTitleChange}
+                            id="title-input"/>
+                    </FormGroup>
                     <FormGroup>
                         <ControlLabel>Report</ControlLabel>
                         <FormControl type='text' required
