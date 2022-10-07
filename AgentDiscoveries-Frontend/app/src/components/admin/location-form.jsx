@@ -26,12 +26,7 @@ export default class LocationForm extends React.Component {
             message: {}
         };
 
-        this.onSiteChange = this.onSiteChange.bind(this);
-        this.onLocationChange = this.onLocationChange.bind(this);
-        this.onTimeZoneChange = this.onTimeZoneChange.bind(this);
         this.onRegionIdChange = this.onRegionIdChange.bind(this);
-        this.onLatitudeChange = this.onLatitudeChange.bind(this);
-        this.onLongitudeChange = this.onLongitudeChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.validateField = this.validateField.bind(this);
@@ -112,28 +107,8 @@ export default class LocationForm extends React.Component {
         );
     }
 
-    onSiteChange(event) {
-        this.setState({ siteName: event.target.value });
-    }
-
-    onLocationChange(event) {
-        this.setState({ location: event.target.value });
-    }
-
-    onTimeZoneChange(event) {
-        this.setState({ timeZone: event.target.value });
-    }
-
     onRegionIdChange(event) {
         this.setState({ regionId: parseInt(event.target.value) });
-    }
-
-    onLongitudeChange(event) {
-        this.setState({ longitude: parseFloat(event.target.value) });
-    }
-
-    onLatitudeChange(event) {
-        this.setState({ latitude: parseFloat(event.target.value) });
     }
 
     handleUserInput(event) {
@@ -151,7 +126,7 @@ export default class LocationForm extends React.Component {
         let locationValid = this.state.locationValid;
         let timeZoneValid = this.state.timeZoneValid;
 
-        switch(fieldName) {
+        switch(fieldName) { // add further validation here 
             case 'siteName':
                 siteValid = value.length > 0;
                 fieldValidationErrors.site = siteValid ? '' : 'Site name connot be empty';
