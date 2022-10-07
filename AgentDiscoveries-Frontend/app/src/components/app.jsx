@@ -18,13 +18,14 @@ import LocationForm from './admin/location-form';
 import RegionForm from './admin/region-form';
 import UserForm from './admin/user-form';
 import Error from './error';
+import { clearUserInfo, isAdmin, isLoggedIn } from './utilities/user-helper';
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoggedIn: isLoggedIn(),
-            isAdmin: isAdmin()
+            isAdmin: isAdmin(),
         };
         this.onLogInEvent = this.onLogInEvent.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
@@ -64,8 +65,8 @@ export default class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    {this.state.isAgent ? this.renderAgentOptions() : null}
-                    {this.state.isAdmin ? this.renderAdminOptions() : null}
+                    {this.state.isAgent ? this.renderAgentLoggedIn() : null}
+                    {this.state.isAdmin ? this.renderAdminLoggedIn() : null}
                     
                     <Route path='/message' render={() => <Page><TodaysCodePage /></Page>} />
                     <Route path='/profile' exact render={() => <Page><Profile /></Page>} />
@@ -83,13 +84,13 @@ export default class App extends React.Component {
                     <Route path='/submit/region' render={() => <Page><RegionSummarySubmit /></Page>} />
                 </switch>
             </Router>
-        )
+        );
     }
     renderAdminLoggedIn(){
         return (
             <Router>
                 <switch>
-                <Route path='/search/location' render={() => <Page><LocationReportSearch /></Page>} />
+                    <Route path='/search/location' render={() => <Page><LocationReportSearch /></Page>} />
                     <Route path='/search/region' render={() => <Page><RegionSummarySearch /></Page>} />
                     <Route path='/admin/locations' exact render={() => <Page><Entities api='locations' key='locations'/></Page>} />
                     <Route path='/admin/regions' exact render={() => <Page><Entities api='regions' key='regions'/></Page>} />
@@ -104,7 +105,7 @@ export default class App extends React.Component {
                     <Route path='/admin/users/edit/:id' render={props => <Page><UserForm id={props.match.params.id} /></Page>} />
                 </switch>
             </Router>
-        )
+        );
     }
 
     handleLogOut(event) {

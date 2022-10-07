@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Button, Checkbox, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import {apiGet, apiPost} from '../utilities/request-helper';
 import {Messages} from '../message';
-import {isAgent, isAdmin, isLoggedIn} from './utilities/user-helper';
 
 
 export default class LocationReportSubmit extends React.Component {
@@ -16,7 +15,6 @@ export default class LocationReportSubmit extends React.Component {
             status: '',
             reportBody: '',
             sendExternal: false,
-
             messages: []
         };
         // this.onLogInEvent = this.onLogInEvent.bind(this);
@@ -47,10 +45,7 @@ export default class LocationReportSubmit extends React.Component {
     //         isAgent: isAgent(),
 
     //     });
-    
 
-    //{this.state.isLoggedIn ? this.renderLoggedIn(): null}
-    //{this.state.isAdmin ? this.renderLoggedIn(): null}
     
     render() {
         return (

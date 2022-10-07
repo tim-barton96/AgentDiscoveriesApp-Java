@@ -13,7 +13,7 @@ export function clearUserInfo() {
     window.localStorage.clear('Token');
     window.localStorage.clear('UserId');
     window.localStorage.clear('Admin');
-    indow.localStorage.clear('Agent');
+    window.localStorage.clear('Agent');
 
     updateListeners();
 }
