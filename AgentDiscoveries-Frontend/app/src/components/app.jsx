@@ -64,11 +64,33 @@ export default class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    <Route path='/search/location' render={() => <Page><LocationReportSearch /></Page>} />
-                    <Route path='/search/region' render={() => <Page><RegionSummarySearch /></Page>} />
+                    {this.state.isAgent ? this.renderAgentOptions() : null}
+                    {this.state.isAdmin ? this.renderAdminOptions() : null}
+                    
+                    <Route path='/message' render={() => <Page><TodaysCodePage /></Page>} />
+                    <Route path='/profile' exact render={() => <Page><Profile /></Page>} />
+                    <Route path='/profile/edit/callsign' render={() => <Page><EditProfileCallSign /></Page>} />
+                    <Route path='/profile/edit/picture' render={() => <Page><EditProfilePicture /></Page>} />
+                </Switch>
+            </Router>
+        );
+    }
+    renderAgentLoggedIn(){
+        return (
+            <Router>
+                <switch>
                     <Route path='/submit/location' render={() => <Page><LocationReportSubmit /></Page>} />
                     <Route path='/submit/region' render={() => <Page><RegionSummarySubmit /></Page>} />
-
+                </switch>
+            </Router>
+        )
+    }
+    renderAdminLoggedIn(){
+        return (
+            <Router>
+                <switch>
+                <Route path='/search/location' render={() => <Page><LocationReportSearch /></Page>} />
+                    <Route path='/search/region' render={() => <Page><RegionSummarySearch /></Page>} />
                     <Route path='/admin/locations' exact render={() => <Page><Entities api='locations' key='locations'/></Page>} />
                     <Route path='/admin/regions' exact render={() => <Page><Entities api='regions' key='regions'/></Page>} />
                     <Route path='/admin/users' exact render={() => <Page><Entities api='users' key='users'/></Page>} />
@@ -80,14 +102,9 @@ export default class App extends React.Component {
                     <Route path='/admin/locations/edit/:id' render={props => <Page><LocationForm id={props.match.params.id} /></Page>} />
                     <Route path='/admin/regions/edit/:id' render={props => <Page><RegionForm id={props.match.params.id} /></Page>} />
                     <Route path='/admin/users/edit/:id' render={props => <Page><UserForm id={props.match.params.id} /></Page>} />
-
-                    <Route path='/message' render={() => <Page><TodaysCodePage /></Page>} />
-                    <Route path='/profile' exact render={() => <Page><Profile /></Page>} />
-                    <Route path='/profile/edit/callsign' render={() => <Page><EditProfileCallSign /></Page>} />
-                    <Route path='/profile/edit/picture' render={() => <Page><EditProfilePicture /></Page>} />
-                </Switch>
+                </switch>
             </Router>
-        );
+        )
     }
 
     handleLogOut(event) {
