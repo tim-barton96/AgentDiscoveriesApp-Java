@@ -16,9 +16,12 @@ export default class LocationForm extends React.Component {
             latitude: '',
             longValid: false,
             latValid: false,
+            // siteValid: false,
+            locationValid: false,
+            timeZoneValid: false,
             formValid: false,
 
-            formErrors: {lat: '', lon: ''},
+            formErrors: {lat: '', lon: '', site: '', location: '', timeZone: ''},
 
             message: {}
         };
@@ -52,24 +55,30 @@ export default class LocationForm extends React.Component {
                         <FormGroup>
                             <ControlLabel>Site Name</ControlLabel>
                             <FormControl type='text' required
+                                name='siteName'
                                 placeholder='Enter site name'
                                 value={this.state.siteName}
                                 onChange={this.onSiteChange}/>
                         </FormGroup>
+                        <div className='col-md-12'>{this.state.formErrors.site}</div>
                         <FormGroup>
                             <ControlLabel>Location Name</ControlLabel>
                             <FormControl type='text' required
+                                name='location'
                                 placeholder='Enter location name'
                                 value={this.state.location}
-                                onChange={this.onLocationChange}/>
+                                onChange={this.handleUserInput}/>
                         </FormGroup>
+                        <div className='col-md-12'>{this.state.formErrors.location}</div>
                         <FormGroup>
                             <ControlLabel>Time Zone</ControlLabel>
                             <FormControl type='text' required
+                                name='timeZone'
                                 placeholder='Enter time zone (e.g. "Europe/London")'
                                 value={this.state.timeZone}
-                                onChange={this.onTimeZoneChange}/>
+                                onChange={this.handleUserInput}/>
                         </FormGroup>
+                        <div className='col-md-12'>{this.state.formErrors.timeZone}</div>
                         <FormGroup>
                             <ControlLabel>Region</ControlLabel>
                             <FormControl type='number'
@@ -138,8 +147,15 @@ export default class LocationForm extends React.Component {
         let fieldValidationErrors = this.state.formErrors;
         let longValid = this.state.longValid;
         let latValid = this.state.latValid;
+        // let siteValid = this.state.siteValid;
+        let locationValid = this.state.locationValid;
+        let timeZoneValid = this.state.timeZoneValid;
 
         switch(fieldName) {
+            // case 'siteName':
+            //     siteValid = value.lenth > 0;
+            //     fieldValidationErrors.site = siteValid ? '' : 'Site name connot be empty';
+            //     break;
             case 'longitude':
                 longValid = value.match(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,6})$/);
                 fieldValidationErrors.lon = longValid ? '' : 'Longitude must be between -180 and 180 with at least 1 and up to 6 decimal places';
@@ -148,18 +164,29 @@ export default class LocationForm extends React.Component {
                 latValid = value.match(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,6})$/);
                 fieldValidationErrors.lat = latValid ? '' : 'Latitude must be between -90 and 90 with at least 1 and up to 6 decimal places';
                 break;
+            case 'location':
+                locationValid = value.length > 0;
+                fieldValidationErrors.location = locationValid ? '' : 'Location name cannot be empty';
+                break;
+            case 'timeZone':
+                timeZoneValid = value.length > 0;
+                fieldValidationErrors.timeZone = timeZoneValid ? '' : 'Time zone cannot be empty';
+                break;
             default:
                 break;
         }
         this.setState({message: fieldValidationErrors,
             longValid: longValid,
-            latValid: latValid},
+            latValid: latValid,
+            locationValid: locationValid,
+            // siteValid: siteValid,
+            timeZoneValid: timeZoneValid},
         this.validateForm);
     }
 
     validateForm() {
-        this.setState({formValid: this.state.longValid && this.state.latValid});
-    }
+        this.setState({formValid: this.state.longValid && this.state.latValid && this.state.locationValid && this.state.timeZoneValid});
+    } // this.state.siteValid &&
 
     errorClass(error) {
         return(error.length === 0 ? '' : 'has-error');
