@@ -18,7 +18,8 @@ export default class LocationReportsSearch extends React.Component {
 
             results: [],
             message: {},
-            callSignResults: []
+            callSignResults: [],
+            locations: []
         };
 
         this.onCallSignChange = this.onCallSignChange.bind(this);
@@ -33,6 +34,10 @@ export default class LocationReportsSearch extends React.Component {
     componentDidMount() {
         apiGet('agents')
             .then(results => this.setState({ callSignResults: results }))
+            .catch(() => this.addMessage('Error fetching agents, please try again later', 'danger'));
+
+        apiGet('locations')
+            .then(results => this.setState({locations: results}))
             .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));
     }
 
@@ -58,10 +63,13 @@ export default class LocationReportsSearch extends React.Component {
                     
                     <FormGroup>
                         <ControlLabel>Location</ControlLabel>
-                        <FormControl type='number'
-                            placeholder='Enter location ID'
+                        <FormControl componentClass='select' required
                             value={this.state.locationId}
-                            onChange={this.onLocationChange}/>
+                            onChange={this.onLocationChange}>
+                            <option value='' hidden>Choose a location</option>
+                            {this.state.locations.map(location =>
+                                <option key={location.locationId} value={location.locationId}>{location.location} {location.siteName}</option>)}
+                        </FormControl>
                     </FormGroup>
                     <FormGroup className='form-inline'>
                         <ControlLabel className='rm-3'>From</ControlLabel>
