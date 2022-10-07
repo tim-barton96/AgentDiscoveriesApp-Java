@@ -18,7 +18,7 @@ import LocationForm from './admin/location-form';
 import RegionForm from './admin/region-form';
 import UserForm from './admin/user-form';
 import Error from './error';
-import { clearUserInfo, isAdmin, isLoggedIn } from './utilities/user-helper';
+import { clearUserInfo, isAdmin, isAgent, isLoggedIn } from './utilities/user-helper';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -26,6 +26,7 @@ export default class App extends React.Component {
         this.state = {
             isLoggedIn: isLoggedIn(),
             isAdmin: isAdmin(),
+            isAgent: isAgent(),
         };
         this.onLogInEvent = this.onLogInEvent.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
@@ -42,7 +43,8 @@ export default class App extends React.Component {
     onLogInEvent() {
         this.setState({
             isLoggedIn: isLoggedIn(),
-            isAdmin: isAdmin()
+            isAdmin: isAdmin(),
+            isAgent: isAgent(),
         });
     }
 
