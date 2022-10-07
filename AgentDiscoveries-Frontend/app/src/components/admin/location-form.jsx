@@ -3,7 +3,6 @@ import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstra
 import {apiGet, apiPost, apiPut} from '../utilities/request-helper';
 import Message from '../message';
 
-
 export default class LocationForm extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +17,7 @@ export default class LocationForm extends React.Component {
             longValid: false,
             latValid: false,
             formValid: false,
+
             formErrors: {lat: '', lon: ''},
 
             message: {}
@@ -33,6 +33,7 @@ export default class LocationForm extends React.Component {
         this.handleUserInput = this.handleUserInput.bind(this);
         this.validateField = this.validateField.bind(this);
         this.validateForm = this.validateForm.bind(this);
+        this.errorClass = this.errorClass.bind(this);
         
 
         // In edit mode, the ID of the location is passed in through props
@@ -48,7 +49,6 @@ export default class LocationForm extends React.Component {
                 <div className='col-md-12'>
                     <Form onSubmit={this.onSubmit}>
                         <h3>{this.props.id ? 'Edit' : 'Create'} Location</h3>
-
                         <FormGroup>
                             <ControlLabel>Site Name</ControlLabel>
                             <FormControl type='text' required
@@ -81,18 +81,21 @@ export default class LocationForm extends React.Component {
                             <ControlLabel>Longitude</ControlLabel>
                             <FormControl type='number' required
                                 name='longitude'
-                                placeholder='Enter longitude (Must be between -180 and 180 with at least 1 decimal place)'
+                                placeholder='Enter longitude (Must be between -180 and 180 with at least 1 and up to 6 decimal places)'
                                 value={this.state.longitude}
                                 onChange={this.handleUserInput}/>
                         </FormGroup>
+                        <div className='col-md-12'>{this.state.formErrors.lon}</div>
                         <FormGroup>
                             <ControlLabel>Latitude</ControlLabel>
                             <FormControl type='number' required
+                                className='form-control'
                                 name='latitude'
-                                placeholder='Enter latitude (Must be between -90 and 90 with at least 1 decimal place)'
+                                placeholder='Enter latitude (Must be between -90 and 90 with at least 1 and up to 6 decimal places)'
                                 value={this.state.latitude}
                                 onChange={this.handleUserInput}/>
                         </FormGroup>
+                        <div className='col-md-12'>{this.state.formErrors.lat}</div>
                         <Button type='submit' disabled={!this.state.formValid}>Submit</Button>
                     </Form>
                 </div>
@@ -139,16 +142,16 @@ export default class LocationForm extends React.Component {
         switch(fieldName) {
             case 'longitude':
                 longValid = value.match(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$/);
-                fieldValidationErrors.lon = longValid ? '' : ' Longitude must be between -180 and 180 and can only contain up to 6 decimal places';
+                fieldValidationErrors.lon = longValid ? '' : ' Longitude must be between -180 and 180 and contain at least 1 decimal place';
                 break;
             case 'latitude':
                 latValid = value.match(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,10})$/);
-                fieldValidationErrors.lat = latValid ? '' : this.setState({ message: 'Latitude wrong'});
+                fieldValidationErrors.lat = latValid ? '' : 'Latitude must be between -90 and 90 and contain at least 1 decimal place';
                 break;
             default:
                 break;
         }
-        this.setState({formErrors: fieldValidationErrors,
+        this.setState({message: fieldValidationErrors,
             longValid: longValid,
             latValid: latValid},
         this.validateForm);
@@ -156,6 +159,10 @@ export default class LocationForm extends React.Component {
 
     validateForm() {
         this.setState({formValid: this.state.longValid && this.state.latValid});
+    }
+
+    errorClass(error) {
+        return(error.length === 0 ? '' : 'has-error');
     }
     
     onSubmit(event) {
