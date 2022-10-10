@@ -87,9 +87,9 @@ export default class RegionSummarySubmit extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
-        
+
         this.setState({ reportSubmitted : true });
-        setTimeout(() => this.setState({ reportSubmitted: false }), 5000); // button disabled for 5 seconds when report submitted
+        setTimeout(() => this.setState({ reportSubmitted: false }), 1000); // button disabled for 5 seconds when report submitted
 
         const body = {
             regionId: this.state.regionId,
@@ -105,6 +105,12 @@ export default class RegionSummarySubmit extends React.Component {
     addMessage(message, type) {
         this.setState(oldState => {
             return { messages: [...oldState.messages, { message: message, type: type }] };
+        });
+
+        this.setState ({
+            regionId: '',
+            reportBody: '',
+            status: ''
         });
     }
 }

@@ -10,7 +10,7 @@ export default class LocationReportSubmit extends React.Component {
 
         this.state = {
             locations: [],
-
+            
             reportSubmitted: false, 
             locationId: '',
             status: '',
@@ -132,7 +132,7 @@ export default class LocationReportSubmit extends React.Component {
     onSubmit(event) {
         event.preventDefault();
         this.setState({ reportSubmitted : true });
-        setTimeout(() => this.setState({ reportSubmitted: false }), 5000); // button disabled for 5 seconds when report submitted
+        setTimeout(() => this.setState({ reportSubmitted: false }), 1000); // button disabled for 5 seconds when report submitted
 
         this.setState({ messages: [] });
 
@@ -153,6 +153,13 @@ export default class LocationReportSubmit extends React.Component {
                 .then(() => this.addMessage('Report submitted to external partner', 'info'))
                 .catch(() => this.addMessage('Error submitting report externally, please try again later', 'danger'));
         }
+
+        this.setState ({
+            status: '',
+            reportTitle: '',
+            reportBody: '',
+            sendExternal: false
+        });
     }
 
     addMessage(message, type) {
