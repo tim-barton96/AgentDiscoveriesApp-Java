@@ -53,8 +53,8 @@ export default class App extends React.Component {
         return (
             <React.Fragment>
                 <Router>
-                    <Switch>
-                        <Route path='/' exact render={() => <Page><Home /></Page>} />
+                    <Switch> 
+                        <Route path='/' exact render={() => <Page><Home isLoggedIn={this.state.isLoggedIn} /></Page>} />
                         <Route path='/login' render={() => <Page><Login /></Page>} />
                         {this.state.isLoggedIn && this.renderLoggedIn()}
                         <Route path='/error' render={() => <Page><Error/></Page>}/>
