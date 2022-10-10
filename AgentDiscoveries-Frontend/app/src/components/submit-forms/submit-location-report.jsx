@@ -28,7 +28,6 @@ export default class LocationReportSubmit extends React.Component {
         this.onReportBodyChange = this.onReportBodyChange.bind(this);
         this.onExternalChange = this.onExternalChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        // this.reportSubmit = this.reportSubmit.bind(this);
     }
 
     UNSAFE_componentWillMount() {

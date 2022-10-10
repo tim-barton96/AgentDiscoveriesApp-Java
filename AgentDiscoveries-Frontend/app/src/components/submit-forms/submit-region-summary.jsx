@@ -14,6 +14,7 @@ export default class RegionSummarySubmit extends React.Component {
             regionId: '',
             status: '',
             reportBody: '',
+            reportSubmitted: false,
 
             messages: []
         };
@@ -66,7 +67,7 @@ export default class RegionSummarySubmit extends React.Component {
                             onChange={this.onReportBodyChange}
                             id="report-input"/>
                     </FormGroup>
-                    <Button type='submit' id="submit-report">Submit</Button>
+                    <Button type='submit' id="submit-report" disabled={this.state.reportSubmitted}>Submit</Button>
                 </Form>
             </div>
         );
@@ -86,6 +87,9 @@ export default class RegionSummarySubmit extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
+        
+        this.setState({ reportSubmitted : true });
+        setTimeout(() => this.setState({ reportSubmitted: false }), 5000); // button disabled for 5 seconds when report submitted
 
         const body = {
             regionId: this.state.regionId,
