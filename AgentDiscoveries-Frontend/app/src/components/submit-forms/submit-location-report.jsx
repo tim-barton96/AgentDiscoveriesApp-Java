@@ -13,6 +13,7 @@ export default class LocationReportSubmit extends React.Component {
 
             locationId: '',
             status: '',
+            reportTitle: '',
             reportBody: '',
             sendExternal: false,
 
@@ -21,6 +22,7 @@ export default class LocationReportSubmit extends React.Component {
 
         this.onLocationChange = this.onLocationChange.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
+        this.onReportTitleChange = this.onReportTitleChange.bind(this);
         this.onReportBodyChange = this.onReportBodyChange.bind(this);
         this.onExternalChange = this.onExternalChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -59,6 +61,16 @@ export default class LocationReportSubmit extends React.Component {
                             onChange={this.onStatusChange}
                             id="status-input"/>
                     </FormGroup>
+
+                    <FormGroup>
+                        <ControlLabel>Title</ControlLabel>
+                        <FormControl type='text' required
+                            componentClass='textarea' rows={1}
+                            placeholder='Write title'
+                            value={this.state.reportTitle}
+                            onChange={this.onReportTitleChange}
+                            id="title-input"/>
+                    </FormGroup>
                     <FormGroup>
                         <ControlLabel>Report</ControlLabel>
                         <FormControl type='text' required
@@ -89,6 +101,10 @@ export default class LocationReportSubmit extends React.Component {
         this.setState({ status: event.target.value && parseInt(event.target.value) });
     }
 
+    onReportTitleChange(event) {
+        this.setState({ reportTitle: event.target.value });
+    }    
+
     onReportBodyChange(event) {
         this.setState({ reportBody: event.target.value });
     }
@@ -105,6 +121,7 @@ export default class LocationReportSubmit extends React.Component {
         const body = {
             locationId: this.state.locationId,
             status: this.state.status,
+            reportTitle: this.state.reportTitle,
             reportBody: this.state.reportBody,
             sendExternal: this.state.sendExternal
         };
