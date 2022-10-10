@@ -11,6 +11,7 @@ export default class LocationReportSubmit extends React.Component {
         this.state = {
             locations: [],
 
+            reportSubmitted: false, 
             locationId: '',
             status: '',
             reportTitle: '',
@@ -27,6 +28,7 @@ export default class LocationReportSubmit extends React.Component {
         this.onReportBodyChange = this.onReportBodyChange.bind(this);
         this.onExternalChange = this.onExternalChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        // this.reportSubmit = this.reportSubmit.bind(this);
     }
 
     UNSAFE_componentWillMount() {
@@ -102,7 +104,7 @@ export default class LocationReportSubmit extends React.Component {
                             Send to external partner
                         </Checkbox>
                     </FormGroup>
-                    <Button type='submit' id="submit-report">Submit</Button>
+                    <Button type='submit' id="submit-report" disabled={this.state.reportSubmitted}>Submit</Button>
                 </Form>
             </div>
         );
@@ -130,6 +132,8 @@ export default class LocationReportSubmit extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
+        this.setState({ reportSubmitted : true });
+        setTimeout(() => this.setState({ reportSubmitted: false }), 5000); // button disabled for 5 seconds when report submitted
 
         this.setState({ messages: [] });
 
