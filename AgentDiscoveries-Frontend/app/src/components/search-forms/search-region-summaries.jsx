@@ -17,7 +17,9 @@ export default class RegionSummariesSearch extends React.Component {
             toTime: '',
 
             results: [],
-            message: {}
+            message: {},
+            regions: [],
+            users: []
         };
 
         this.onRegionChange = this.onRegionChange.bind(this);
@@ -27,6 +29,15 @@ export default class RegionSummariesSearch extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+    componentDidMount() {
+        apiGet('users')
+            .then(results => this.setState({ users: results }))
+            .catch(() => this.addMessage('Error fetching users, please try again later', 'danger'));
+
+        apiGet('regions')
+            .then(results => this.setState({regions: results}))
+            .catch(() => this.addMessage('Error fetching regions, please try again later'));
+    }
 
     render() {
         return (
@@ -36,19 +47,28 @@ export default class RegionSummariesSearch extends React.Component {
 
                     <Message message={this.state.message} />
 
+                    
                     <FormGroup>
                         <ControlLabel>Region</ControlLabel>
-                        <FormControl type='text'
-                            placeholder='Enter region ID'
+                        <FormControl componentClass='select' required
                             value={this.state.regionId}
-                            onChange={this.onRegionChange}/>
+                            onChange={this.onRegionChange}
+                            id='region-select'>
+                            <option value='' hidden>Choose an region</option>
+                            {this.state.regions.map(region => 
+                                <option key={region.regionId} value={region.regionId}>{region.name}</option>)}
+                        </FormControl>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>User</ControlLabel>
-                        <FormControl type='text'
-                            placeholder='Enter user ID'
+                        <FormControl componentClass='select' required
                             value={this.state.userId}
-                            onChange={this.onUserChange}/>
+                            onChange={this.onUserChange}
+                            id='user-select'>
+                            <option value='' hidden>Choose an user</option>
+                            {this.state.users.map(user => 
+                                <option key={user.userId} value={user.userId}>{user.userId} {user.username}</option>)}
+                        </FormControl>
                     </FormGroup>
                     <FormGroup className='form-inline'>
                         <ControlLabel className='rm-3'>From</ControlLabel>

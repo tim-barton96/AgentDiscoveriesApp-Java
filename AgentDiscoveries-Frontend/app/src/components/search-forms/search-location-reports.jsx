@@ -11,14 +11,16 @@ export default class LocationReportsSearch extends React.Component {
         super(props);
 
         this.state = {
-            callSign: '',
+            callSign: 'default',
             locationId: '',
             title: '',
             fromTime: '',
             toTime: '',
 
             results: [],
-            message: {}
+            message: {},
+            callSignResults: [],
+            locations: []
         };
 
         this.onCallSignChange = this.onCallSignChange.bind(this);
@@ -27,7 +29,20 @@ export default class LocationReportsSearch extends React.Component {
         this.onFromChange = this.onFromChange.bind(this);
         this.onToChange = this.onToChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+
+        
     }
+
+    componentDidMount() {
+        apiGet('agents')
+            .then(results => this.setState({ callSignResults: results }))
+            .catch(() => this.addMessage('Error fetching agents, please try again later', 'danger'));
+
+        apiGet('locations')
+            .then(results => this.setState({locations: results}))
+            .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));
+    }
+
 
     render() {
         return (
@@ -36,14 +51,18 @@ export default class LocationReportsSearch extends React.Component {
                     <h3>Search Location Reports</h3>
 
                     <Message message={this.state.message} />
-
                     <FormGroup>
                         <ControlLabel>Agent Call Sign</ControlLabel>
-                        <FormControl type='text'
-                            placeholder='Enter agent Call Sign'
+                        <FormControl componentClass='select' required
                             value={this.state.callSign}
-                            onChange={this.onCallSignChange}/>
+                            onChange={this.onCallSignChange}
+                            id='agent-select'>
+                            <option value='' hidden>Choose an agent</option>
+                            {this.state.callSignResults.map(agent => 
+                                <option key={agent.callSign} value={agent.callSign}>{agent.callSign}</option>)}
+                        </FormControl>
                     </FormGroup>
+                    
                     <FormGroup>
                         <ControlLabel>Title</ControlLabel>
                         <FormControl type='text'
@@ -53,10 +72,13 @@ export default class LocationReportsSearch extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Location</ControlLabel>
-                        <FormControl type='number'
-                            placeholder='Enter location ID'
+                        <FormControl componentClass='select' required
                             value={this.state.locationId}
-                            onChange={this.onLocationChange}/>
+                            onChange={this.onLocationChange}>
+                            <option value='' hidden>Choose a location</option>
+                            {this.state.locations.map(location =>
+                                <option key={location.locationId} value={location.locationId}>{location.location} {location.siteName}</option>)}
+                        </FormControl>
                     </FormGroup>
                     <FormGroup className='form-inline'>
                         <ControlLabel className='rm-3'>From</ControlLabel>
@@ -111,4 +133,5 @@ export default class LocationReportsSearch extends React.Component {
             .then(results => this.setState({ results: results, message: {} }))
             .catch(error => this.setState({ message: { message: error.message, type: 'danger' } }));
     }
+
 }
