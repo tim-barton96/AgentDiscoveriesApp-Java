@@ -8,6 +8,7 @@ import org.softwire.training.db.daos.searchcriteria.FromTimeSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.RegionIdSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.ReportSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.UserIdSearchCriterion;
+import org.softwire.training.db.daos.searchcriteria.ReportTitleSearchCriterion;
 import org.softwire.training.models.RegionSummaryReport;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -80,6 +81,10 @@ public class RegionSummaryReportsRoutes extends ReportsRoutesBase<RegionSummaryR
 
         if (!isNullOrEmpty(queryMap.get("toTime").value())) {
             apiReportSearchCriteria.add(new FromTimeSearchCriterion(ZonedDateTime.parse(queryMap.get("toTime").value())));
+        }
+
+        if (!isNullOrEmpty(queryMap.get("reportTitle").value())) {
+            apiReportSearchCriteria.add(new ReportTitleSearchCriterion(queryMap.get("reportTitle").value()));
         }
 
         return apiReportSearchCriteria;

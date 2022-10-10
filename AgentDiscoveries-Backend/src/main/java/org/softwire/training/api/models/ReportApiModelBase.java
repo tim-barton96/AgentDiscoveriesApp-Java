@@ -7,6 +7,9 @@ public class ReportApiModelBase {
     private int reportId;
     private byte status;
     private ZonedDateTime reportTime;
+    private String reportTitle;
+
+
     private String reportBody;
     private int agentId;
 
@@ -34,6 +37,14 @@ public class ReportApiModelBase {
         this.reportTime = reportTime;
     }
 
+    public String getReportTitle() {
+        return reportTitle;
+    }
+
+    public void setReportTitle(String reportTitle) {
+        this.reportTitle = reportTitle;
+    }
+
     public String getReportBody() {
         return reportBody;
     }
@@ -49,4 +60,12 @@ public class ReportApiModelBase {
     public void setAgentId(int agentId) {
         this.agentId = agentId;
     }
+
+    @Override
+    public String toString() {
+        return "ReportApiModelBase [reportId=" + reportId + ", status=" + status + ", reportTime=" + reportTime
+                + ", reportTitle=" + reportTitle + ", reportBody=" + reportBody + ", agentId=" + agentId + "]";
+    }
+
+    
 }

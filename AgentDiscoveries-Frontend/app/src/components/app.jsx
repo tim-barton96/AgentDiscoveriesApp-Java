@@ -20,6 +20,7 @@ import UserForm from './admin/user-form';
 import Error from './error';
 import { clearUserInfo, isAdmin, isAgent, isLoggedIn } from './utilities/user-helper';
 
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -55,7 +56,7 @@ export default class App extends React.Component {
                     <Switch>
                         <Route path='/' exact render={() => <Page><Home /></Page>} />
                         <Route path='/login' render={() => <Page><Login /></Page>} />
-                        {this.state.isLoggedIn ? this.renderLoggedIn(): null}
+                        {this.state.isLoggedIn && this.renderLoggedIn()}
                         <Route path='/error' render={() => <Page><Error/></Page>}/>
                         <Route render={() => <Page><Error/></Page>}/>
                     </Switch>
@@ -101,6 +102,7 @@ export default class App extends React.Component {
                 <Route path='/admin/regions/edit/:id' render={props => <Page><RegionForm id={props.match.params.id} /></Page>} />
                 <Route path='/admin/users/edit/:id' render={props => <Page><UserForm id={props.match.params.id} /></Page>} />
             </React.Fragment>
+
         );
     }
 
@@ -110,7 +112,4 @@ export default class App extends React.Component {
         clearUserInfo();
         window.location.hash = '#/';
     }
-
-
-
 }
