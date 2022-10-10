@@ -16,9 +16,10 @@ export default class LocationReportSubmit extends React.Component {
             reportTitle: '',
             reportBody: '',
             sendExternal: false,
-
             messages: []
         };
+        // this.onLogInEvent = this.onLogInEvent.bind(this);
+        // this.handleLogOut = this.onLogInEvent.bind(this);
 
         this.onLocationChange = this.onLocationChange.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
@@ -33,7 +34,21 @@ export default class LocationReportSubmit extends React.Component {
             .then(results => this.setState({ locations: results }))
             .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));
     }
+    // componentDidMount(){
+    //     window.addEventListener('login',this.onLogInEvent);
+    // }
+    // componentWillUnmount(){
+    //     window.addEventListener('login',this.onLogInEvent);
+    // }
+    // onLogInEvent(){
+    //     this.setState({
+    //         isLoggedIn: isLoggedIn(),
+    //         isAdmin: isAdmin(),
+    //         isAgent: isAgent(),
 
+    //     });
+
+    
     render() {
         return (
             <div className='col-md-8 col-md-offset-2'>

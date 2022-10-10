@@ -35,7 +35,7 @@ To start the application from the command line, run
 
 ## Checking the application has started
 
-The application homepage can be found at `http://localhost:8080`.
+The application homepage can be found at `http://localhost:8080`.java -jar AgentDiscoveries-Backend/target/agentdiscoveries-backend-1.0-SNAPSHOT.jar
 
 There is also a health-check at `http://localhost:8080/healthcheck`.
 If there are any problems starting the application take a look at the logs first, it is probably a database or port already in use issue.

@@ -41,12 +41,13 @@ public class UsersDao {
 
     public int addUser(User user) {
         try (Handle handle = jdbi.open()) {
-            return handle.createUpdate("INSERT INTO users (username, hashed_password, agent_id, admin) " +
-                    "VALUES (:username, :hashed_password, :agent_id, :admin)")
+            return handle.createUpdate("INSERT INTO users (username, hashed_password, agent_id, admin, agent) " +
+                    "VALUES (:username, :hashed_password, :agent_id, :admin :agent)")
                     .bind("username", user.getUsername())
                     .bind("hashed_password", user.getHashedPassword())
                     .bind("agent_id", user.getAgentId())
                     .bind("admin", user.isAdmin())
+                    .bind("agent", user.isAgent())
                     .executeAndReturnGeneratedKeys("user_id")
                     .mapTo(Integer.class)
                     .findOnly();
@@ -63,13 +64,14 @@ public class UsersDao {
 
     public void updateUser(User user) {
         try (Handle handle = jdbi.open()) {
-            handle.createUpdate("UPDATE users SET username = :username , hashed_password = :password , agent_id = :agent_id, admin = :admin " +
+            handle.createUpdate("UPDATE users SET username = :username , hashed_password = :password , agent_id = :agent_id, admin = :admin , agent = :agent " +
                     "WHERE user_id = :user_id")
                     .bind("user_id", user.getUserId())
                     .bind("username", user.getUsername())
                     .bind("password", user.getHashedPassword())
                     .bind("agent_id", user.getAgentId())
                     .bind("admin", user.isAdmin())
+                    .bind("agent", user.isAgent())
                     .execute();
         }
     }
