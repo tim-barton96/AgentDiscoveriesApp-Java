@@ -33,12 +33,14 @@ public class LocationsDao {
 
     public int createLocation(Location location) {
         try (Handle handle = jdbi.open()) {
-            return handle.createUpdate("INSERT INTO locations (location, site_name, time_zone, region_id) " +
-                    "VALUES (:location, :site_name, :time_zone, :region_id)")
+            return handle.createUpdate("INSERT INTO locations (location, site_name, time_zone, region_id, longitude, latitude) " +
+                    "VALUES (:location, :site_name, :time_zone, :region_id, :longitude, :latitude)")
                     .bind("location", location.getLocation())
                     .bind("site_name", location.getSiteName())
                     .bind("time_zone", location.getTimeZone())
                     .bind("region_id", location.getRegionId())
+                    .bind("longitude", location.getLongitude())
+                    .bind("latitude", location.getLatitude())
                     .executeAndReturnGeneratedKeys("location_id")
                     .mapTo(Integer.class)
                     .findOnly();
@@ -56,12 +58,15 @@ public class LocationsDao {
     public void updateLocation(Location location) {
         try (Handle handle = jdbi.open()) {
             handle.createUpdate("UPDATE locations SET location = :location, site_name = :site_name, " +
-                    "time_zone = :time_zone, region_id = :region_id WHERE location_id = :location_id")
+                    "time_zone = :time_zone, region_id = :region_id, longitude = :longitude, latitude = :latitude " + 
+                    "WHERE location_id = :location_id")
                     .bind("location_id", location.getLocationId())
                     .bind("location", location.getLocation())
                     .bind("site_name", location.getSiteName())
                     .bind("time_zone", location.getTimeZone())
                     .bind("region_id", location.getRegionId())
+                    .bind("longitude", location.getLongitude())
+                    .bind("latitude", location.getLatitude())
                     .execute();
         }
     }
