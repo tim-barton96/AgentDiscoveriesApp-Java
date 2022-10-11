@@ -77,3 +77,8 @@ body {
 .profile-img-container:hover .overlay {
   opacity: 0.8;
 }
+
+.panel-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}

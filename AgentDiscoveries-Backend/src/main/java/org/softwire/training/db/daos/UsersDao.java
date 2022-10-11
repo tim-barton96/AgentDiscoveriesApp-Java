@@ -42,7 +42,7 @@ public class UsersDao {
     public int addUser(User user) {
         try (Handle handle = jdbi.open()) {
             return handle.createUpdate("INSERT INTO users (username, hashed_password, agent_id, admin, agent) " +
-                    "VALUES (:username, :hashed_password, :agent_id, :admin :agent)")
+                    "VALUES (:username, :hashed_password, :agent_id, :admin, :agent)")
                     .bind("username", user.getUsername())
                     .bind("hashed_password", user.getHashedPassword())
                     .bind("agent_id", user.getAgentId())
