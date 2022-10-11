@@ -8,10 +8,12 @@ export default class TodaysCodePage extends React.Component {
 
         this.state = {
             message: '',
+            password: '',
             result: ''
         };
 
-        this.onChange = this.onChange.bind(this);
+        this.onMessageChange = this.onMessageChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
         this.handleDecode = this.handleDecode.bind(this);
         this.handleEncode = this.handleEncode.bind(this);
         this.handleRequest = this.handleRequest.bind(this);
@@ -31,7 +33,15 @@ export default class TodaysCodePage extends React.Component {
                             componentClass='textarea' rows={6}
                             placeholder='Enter message'
                             value={this.state.message}
-                            onChange={this.onChange}/>
+                            onChange={this.onMessageChange}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>Password</ControlLabel>
+                        <FormControl type='password' required
+                            id='password-input'
+                            placeholder='Enter password'
+                            value={this.state.password}
+                            onChange={this.onPasswordChange}/>
                     </FormGroup>
 
                     <Button id="encode-button" className='rm-3' type='submit' onClick={this.handleEncode}>Encode</Button>
@@ -48,18 +58,22 @@ export default class TodaysCodePage extends React.Component {
         );
     }
 
-    onChange(event) {
+    onMessageChange(event) {
         this.setState({ message: event.target.value });
+    }
+
+    onPasswordChange(event) {
+        this.setState({ password: event.target.value });
     }
 
     handleEncode(event) {
         event.preventDefault();
-        this.handleRequest('encodemessage');
+        this.handleRequest('encodemessage1');
     }
 
     handleDecode(event) {
         event.preventDefault();
-        this.handleRequest('decodemessage');
+        this.handleRequest('decodemessage1');
     }
 
     handleRequest(api) {

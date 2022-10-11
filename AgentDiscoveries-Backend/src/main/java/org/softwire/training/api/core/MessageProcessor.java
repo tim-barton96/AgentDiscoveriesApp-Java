@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.EnvironmentConfiguration;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -29,6 +30,8 @@ import java.security.spec.KeySpec;
 //import java.security.*;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Arrays.*;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -59,7 +62,33 @@ public class MessageProcessor {
             throw new RuntimeException(e);
         }
     }
-    
+
+    public String encodeM(String message, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, 
+    InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
+        String salt = "12345678"; //generate salt from date function
+        String algorithm = "AES/CBC/PKCS5Padding";
+        IvParameterSpec ivParameterSpec = generateIv(); // need to add IV to start of the cipher text 
+        SecretKey key = getKeyFromPassword(password, salt);
+        String cipherText = ivParameterSpec + "" + encrypt(algorithm, message, key, ivParameterSpec);
+        //String cipherText = ivParameterSpec + tempCipherText;
+
+        return cipherText;
+    }
+
+    public String decodeM(String cipherText, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, 
+    InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
+        String salt = "12345678"; //generate salt from date function
+        String algorithm = "AES/CBC/PKCS5Padding";
+        IvParameterSpec ivParameterSpec = generateIv(); // need to read IV from the start of the cipher text
+        //String strSub = cipherText.substring(0, 15);
+        // byte[] ivParameterSpec = Arrays.copyOfRange(cipherText, 0, 16);
+
+        SecretKey key = getKeyFromPassword(password, salt);
+        String decryptedCipherText = decrypt(algorithm, cipherText, key, ivParameterSpec);
+
+        return decryptedCipherText;
+    }
+
     //new code
     public SecretKey generateKey(int n) throws NoSuchAlgorithmException {
         KeyGenerator generator = KeyGenerator.getInstance("AES");
@@ -67,6 +96,7 @@ public class MessageProcessor {
         SecretKey key = generator.generateKey();
         return key;
     }
+    
 
     public static SecretKey getKeyFromPassword(String password, String salt)
     throws NoSuchAlgorithmException, InvalidKeySpecException {
