@@ -15,14 +15,29 @@ export default class Home extends React.Component {
         return (
             <React.Fragment>
                 {!this.props.isLoggedIn && this.renderLogInRedirect()}
-                <h1>Welcome Agent  ° ͜ʖ°</h1>
+                {this.props.isAgent && this.renderAgentHome()}
+                {this.props.isAdmin && this.renderAdminHome()}
                 <h2>{this.state.currentDateTime}</h2>
+            </React.Fragment>
+        );
+    }
+    renderAgentHome(){
+        return(
+            <React.Fragment>
+                <h1>° ͜ʖ° Hello there Agent ° ͜ʖ°</h1>
+            </React.Fragment>
+        );
+    }
+    renderAdminHome(){
+        return(
+            <React.Fragment>
+                <h1>Welcome bossman ~ ͜ʖ°</h1>
             </React.Fragment>
         );
     }
     renderLogInRedirect(){
         return(
-            <React.Fragment>
+            <React.Fragment>java -jar AgentDiscoveries-Backend/target/agentdiscoveries-backend-1.0-SNAPSHOT.jar
                 <Redirect to='/login' />
             </React.Fragment>
         );
