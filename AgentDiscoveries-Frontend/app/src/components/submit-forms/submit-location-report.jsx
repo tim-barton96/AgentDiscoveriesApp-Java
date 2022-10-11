@@ -50,7 +50,7 @@ export default class LocationReportSubmit extends React.Component {
                                 <option key={location.locationId} value={location.locationId}>{location.location}, {location.siteName}</option>)}
                         </FormControl>
                     </FormGroup>
-                    <FormGroup noValidate>
+                    <FormGroup>
                         <ControlLabel>Status</ControlLabel>
                         <FormControl type='number' required
                             placeholder='Enter numeric status code between 0 and 100'

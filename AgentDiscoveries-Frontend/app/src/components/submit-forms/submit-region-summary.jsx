@@ -49,7 +49,7 @@ export default class RegionSummarySubmit extends React.Component {
                                 <option key={region.regionId} value={region.regionId}>{region.name}</option>)}
                         </FormControl>
                     </FormGroup>
-                    <FormGroup noValidate>
+                    <FormGroup>
                         <ControlLabel>Status</ControlLabel>
                         <FormControl type='number' required 
                             placeholder='Enter numeric status code between 0 and 100'
