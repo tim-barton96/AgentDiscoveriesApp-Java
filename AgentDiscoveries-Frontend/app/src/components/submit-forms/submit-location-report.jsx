@@ -50,12 +50,15 @@ export default class LocationReportSubmit extends React.Component {
                                 <option key={location.locationId} value={location.locationId}>{location.location}, {location.siteName}</option>)}
                         </FormControl>
                     </FormGroup>
-                    <FormGroup>
+                    <FormGroup noValidate>
                         <ControlLabel>Status</ControlLabel>
                         <FormControl type='number' required
                             placeholder='Enter numeric status code between 0 and 100'
                             value={this.state.status}
                             onChange={this.onStatusChange}
+                            pattern='^[0-9]$|^[1-9][0-9]$|^(100)$'
+                            min={0}
+                            max={100}
                             id="status-input"/>
                     </FormGroup>
                     <FormGroup>
@@ -84,11 +87,8 @@ export default class LocationReportSubmit extends React.Component {
         this.setState({ locationId: event.target.value && parseInt(event.target.value) });
     }
 
-    onStatusChange(event) {
-        const min = 0;
-        const max = 100;
-        const value = Math.max(min, Math.min(max, Number(event.target.value)));
-        this.setState({status: value});
+    onStatusChange(event){
+        this.setState({ status: event.target.value && parseInt(event.target.value)});
     }
 
     onReportBodyChange(event) {
