@@ -37,7 +37,7 @@ export function isAgent(){
     return window.localStorage.getItem('Agent') === 'true';
 }
 export function currentDateTime(){
-    return Date().toLocaleString();
+    return new Date().toLocaleString('en-GB',{timeZone:'Europe/London'});
 }
 
 // Fire a 'login' event when the user info is updated.
