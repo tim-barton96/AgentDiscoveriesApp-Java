@@ -4,7 +4,7 @@ public class Message {
     private String message;
     private String password;
 
-    public Message(String message) {
+    public Message(String message, String password) {
         this.message = message;
         this.password = password;
     }

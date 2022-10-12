@@ -68,19 +68,20 @@ export default class TodaysCodePage extends React.Component {
 
     handleEncode(event) {
         event.preventDefault();
-        this.handleRequest('encodemessage1');
+        this.handleRequest('encodemessage');
     }
 
     handleDecode(event) {
         event.preventDefault();
-        this.handleRequest('decodemessage1');
+        this.handleRequest('decodemessage');
     }
 
     handleRequest(api) {
-        const body = { message: this.state.message };
+        const body = { message: this.state.message,
+            password: this.state.password };
 
         apiPost(api, body)
-            .then(response => this.setState({ result: response.message }))
+            .then(response => this.setState({ result: response }))
             .catch(error => this.setState({ result: error.message }));
     }
 }

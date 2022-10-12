@@ -25,30 +25,30 @@ public class MessageProcessorRoutes {
         this.messageProcessor = messageProcessor;
     }
 
-    public Message encodeMessage(Request req, Response res) {
-        Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
-        String encoded = messageProcessor.encode(message.getMessage());
-        return new Message(encoded);
-    }
+    // public Message encodeMessage(Request req, Response res) {
+    //     Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
+    //     String encoded = messageProcessor.encode(message.getMessage());
+    //     return new Message(encoded);
+    // }
 
-    public Message decodeMessage(Request req, Response res) {
-        Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
-        String decoded = messageProcessor.decode(message.getMessage());
-        return new Message(decoded);
-    }
+    // public Message decodeMessage(Request req, Response res) {
+    //     Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
+    //     String decoded = messageProcessor.decode(message.getMessage());
+    //     return new Message(decoded);
+    // }
 
-    public Message encodeMessage1(Request req, Response res) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, 
+    public String encodeMessage(Request req, Response res) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, 
     NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException { //needs to take password from form
         Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
         String encoded = messageProcessor.encodeM(message.getMessage(), message.getPassword());
-        return new Message(encoded);
+        return encoded;
     }
 
-    public Message decodeMessage1(Request req, Response res) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, 
+    public String decodeMessage(Request req, Response res) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, 
     NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
         Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
         String decoded = messageProcessor.decodeM(message.getMessage(), message.getPassword());
-        return new Message(decoded);
+        return decoded;
     }
 
 }

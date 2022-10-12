@@ -36,7 +36,7 @@ import java.util.Arrays.*;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import java.util.HexFormat;
+//import java.util.HexFormat;
 
 /**
  * The MessageProcessor selects a word from a list and applies a shift cipher.
@@ -68,23 +68,25 @@ public class MessageProcessor {
 
     public String encodeM(String message, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, 
     InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
-        String salt = "12345678"; //generate salt from date function
+        //String salt = "12345678"; //generate salt from date function
+        //String salt = saltCreator();
+        String salt = java.time.LocalDate.now().toString();
         String algorithm = "AES/CBC/PKCS5Padding";
         IvParameterSpec ivParameterSpec = generateIv(); // need to add IV to start of the cipher text 
         String hexString = ivToHexString(ivParameterSpec);
         SecretKey key = getKeyFromPassword(password, salt);
         String cipherText = hexString + encrypt(algorithm, message, key, ivParameterSpec);
-        //String cipherText = ivParameterSpec + tempCipherText;
 
         return cipherText;
     }
 
     public String decodeM(String cipherText, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, 
     InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
-        String salt = "12345678"; //generate salt from date function
+        //String salt = "12345678"; //generate salt from date function
+        String salt = java.time.LocalDate.now().toString();
         String algorithm = "AES/CBC/PKCS5Padding";
 
-        String hexIv = cipherText.substring(0, 32); //account for all hex digits
+        String hexIv = cipherText.substring(0, 32);
         String cipherMinusHex = cipherText.substring(32);
         IvParameterSpec ivParameterSpec = hexStringToIv(hexIv); 
 
@@ -107,7 +109,7 @@ public class MessageProcessor {
     throws NoSuchAlgorithmException, InvalidKeySpecException {//needs more speeddddddddddddddddddddddddddddddddddddddd
     
     SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 32768, 128);
+    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 1248, 128);
      SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
         .getEncoded(), "AES");
     return secret;
@@ -160,8 +162,8 @@ public class MessageProcessor {
         return new String(plainText);
     } 
 
-    public String saltCreator() {
-        java.time.LocalDate.now();
+    public String saltCreator(String hexString) {
+        String salt = java.time.LocalDate.now().toString();
 
         return salt;
     }
