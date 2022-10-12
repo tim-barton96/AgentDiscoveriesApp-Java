@@ -4,6 +4,7 @@ import {apiGet, apiPost} from '../utilities/request-helper';
 import {Messages} from '../message';
 
 export default class LocationReportSubmit extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -14,6 +15,8 @@ export default class LocationReportSubmit extends React.Component {
             status: '',
             reportTitle: '',
             reportBody: '',
+            attachmentName: '',
+            attachmentContent: '',
             sendExternal: false,
             messages: []
         };
@@ -24,6 +27,7 @@ export default class LocationReportSubmit extends React.Component {
         this.onStatusChange = this.onStatusChange.bind(this);
         this.onReportTitleChange = this.onReportTitleChange.bind(this);
         this.onReportBodyChange = this.onReportBodyChange.bind(this);
+        this.onReportAttachmentChange = this.onReportAttachmentChange.bind(this);
         this.onExternalChange = this.onExternalChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -47,7 +51,7 @@ export default class LocationReportSubmit extends React.Component {
 
     //     });
 
-    
+
     render() {
         return (
             <div className='col-md-8 col-md-offset-2'>
@@ -98,6 +102,14 @@ export default class LocationReportSubmit extends React.Component {
                             id="report-input"/>
                     </FormGroup>
                     <FormGroup>
+                        <ControlLabel>Attach file</ControlLabel>
+                        <FormControl type="file"
+                            placeholder="Upload file"
+                            value={this.state.attachment}
+                            onChange={this.onReportAttachmentChange}
+                            id="attach-input"/>
+                    </FormGroup>
+                    <FormGroup>
                         <Checkbox type='checkbox'
                             value={this.state.sendExternal}
                             onChange={this.onExternalChange}>
@@ -120,10 +132,26 @@ export default class LocationReportSubmit extends React.Component {
 
     onReportTitleChange(event) {
         this.setState({ reportTitle: event.target.value });
-    }    
+    }
 
     onReportBodyChange(event) {
         this.setState({ reportBody: event.target.value });
+    }
+
+    onReportAttachmentChange(event) {
+        let file = event.target.files[0];
+        this.setState({ attachmentName: file.name });
+
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+            this.addMessage('File loaded.','info');
+            this.setState({ attachmentContent: reader.result });
+        };
+        reader.onerror = () => {
+            this.addMessage('File failed to load','danger');
+        };
     }
 
     onExternalChange(event) {
@@ -140,6 +168,8 @@ export default class LocationReportSubmit extends React.Component {
             status: this.state.status,
             reportTitle: this.state.reportTitle,
             reportBody: this.state.reportBody,
+            attachmentName: this.state.attachmentName,
+            attachmentContent: this.state.attachmentContent,
             sendExternal: this.state.sendExternal
         };
 
