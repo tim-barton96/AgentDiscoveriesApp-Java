@@ -1,31 +1,38 @@
 import * as React from 'react';
 import { Redirect} from 'react-router-dom';
+import { apiGet } from './utilities/request-helper';
 import { currentDateTimeEULondon} from './utilities/user-helper';
+//import {apiGet} from '../utilities/request-helper';
 
 export default class Home extends React.Component {
 
-    componentDidMount() {
-        apiGet('time_zone')
-        .then(results => this.setState({locations: results}))
-        .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));
-    }
-
-
-    
-
-
-
-
-
-
+    // renderResultBody(result) {
+    //     return Object.keys(result).map(key => {
+    //         return <p key={key} id={key}>{`${key}: ${result[key]}`}</p>;
+    //     });
+    // }
 
 
     constructor(props) {
         super(props);
         this.state = {
             currentDateTimeEULondon: currentDateTimeEULondon(),
+            timeZones: [],
         };
     }
+    componentDidMount(){
+        apiGet('locations')
+            .then(reults => filterLocations(results))
+            .catch(() => this.addMessage('Error fetching timezones, please try again later'));
+    }
+    filterLocations(results){
+        results.array.forEach(result => {
+            if (!timeZones.contains(result)){
+                timeZones.push(result);
+            }
+        })
+    }
+
     render() {
         return (
             <React.Fragment>
