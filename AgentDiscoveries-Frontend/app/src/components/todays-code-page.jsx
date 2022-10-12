@@ -53,6 +53,7 @@ export default class TodaysCodePage extends React.Component {
                     {this.state.result ? <h3>Result</h3> : ''}
                     {this.state.result}
                 </div>
+                <button id="encode-button" type='submit' className='rm-3' onClick={() =>  navigator.clipboard.writeText(this.state.result)}>Copy</button>
             </div>
 
         );

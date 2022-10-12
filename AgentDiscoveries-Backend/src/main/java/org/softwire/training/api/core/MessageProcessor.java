@@ -4,7 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.EnvironmentConfiguration;
+//import org.apache.commons.configuration2.EnvironmentConfiguration;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -28,15 +28,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-//import java.security.spec.*;
-//import java.security.*;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.Arrays.*;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-//import java.util.HexFormat;
 
 /**
  * The MessageProcessor selects a word from a list and applies a shift cipher.
@@ -68,32 +63,24 @@ public class MessageProcessor {
 
     public String encodeM(String message, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, 
     InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
-        //String salt = "12345678"; //generate salt from date function
-        //String salt = saltCreator();
-        String salt = java.time.LocalDate.now().toString();
         String algorithm = "AES/CBC/PKCS5Padding";
         IvParameterSpec ivParameterSpec = generateIv(); // need to add IV to start of the cipher text 
-        String hexString = ivToHexString(ivParameterSpec);
+        String hexString = ivToHexString(ivParameterSpec); 
+        String salt = saltCreator(hexString);
         SecretKey key = getKeyFromPassword(password, salt);
         String cipherText = hexString + encrypt(algorithm, message, key, ivParameterSpec);
-
         return cipherText;
     }
 
     public String decodeM(String cipherText, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, 
     InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
-        //String salt = "12345678"; //generate salt from date function
-        String salt = java.time.LocalDate.now().toString();
         String algorithm = "AES/CBC/PKCS5Padding";
-
         String hexIv = cipherText.substring(0, 32);
         String cipherMinusHex = cipherText.substring(32);
-        IvParameterSpec ivParameterSpec = hexStringToIv(hexIv); 
-
+        IvParameterSpec ivParameterSpec = hexStringToIv(hexIv);
+        String salt = saltCreator(hexIv);
         SecretKey key = getKeyFromPassword(password, salt);
-
         String decryptedCipherText = decrypt(algorithm, cipherMinusHex, key, ivParameterSpec);
-
         return decryptedCipherText;
     }
 
@@ -106,8 +93,7 @@ public class MessageProcessor {
     
 
     public static SecretKey getKeyFromPassword(String password, String salt)
-    throws NoSuchAlgorithmException, InvalidKeySpecException {//needs more speeddddddddddddddddddddddddddddddddddddddd
-    
+    throws NoSuchAlgorithmException, InvalidKeySpecException {//speed affected by iteration count
     SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
     KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 1248, 128);
      SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
@@ -123,8 +109,7 @@ public class MessageProcessor {
 
     public String ivToHexString(IvParameterSpec ivParameterSpec) {
         byte[] tempBytes = ivParameterSpec.getIV();
-        StringBuilder hexIVAsStringTemp = new StringBuilder(); // needs to do 32 hex digits
-        //for (int i = 0; i >= 15; i++) {
+        StringBuilder hexIVAsStringTemp = new StringBuilder();
         for (byte b : tempBytes) {
             hexIVAsStringTemp.append(String.format("%02X ", b));
         }
@@ -132,7 +117,7 @@ public class MessageProcessor {
         return hexIVAsString.toString();
     }
 
-    public IvParameterSpec hexStringToIv(String hexString) { //does this need to change?
+    public IvParameterSpec hexStringToIv(String hexString) {
         byte[] bytes = DatatypeConverter.parseHexBinary(hexString);
         IvParameterSpec ivParameterSpec = new IvParameterSpec(bytes);
         return ivParameterSpec;
@@ -163,7 +148,8 @@ public class MessageProcessor {
     } 
 
     public String saltCreator(String hexString) {
-        String salt = java.time.LocalDate.now().toString();
+        String salt = java.time.LocalDate.now().toString().substring(0, 5) + hexString.substring(0, 3)
+         + java.time.LocalDate.now().toString().substring(6) + hexString.substring(4, 8);
 
         return salt;
     }
