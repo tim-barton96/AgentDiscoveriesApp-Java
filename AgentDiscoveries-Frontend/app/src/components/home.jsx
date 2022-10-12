@@ -4,6 +4,12 @@ import { currentDateTimeEULondon} from './utilities/user-helper';
 
 export default class Home extends React.Component {
 
+    componentDidMount() {
+        apiGet('time_zone')
+        .then(results => this.setState({locations: results}))
+        .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));
+    }
+
 
     
 
