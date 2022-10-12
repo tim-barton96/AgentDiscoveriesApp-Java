@@ -3,7 +3,7 @@ import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstra
 import QueryString from 'query-string';
 import moment from 'moment';
 import Message from '../message';
-import SearchResult from './search-result';
+import SearchLocationResult from './search-location-result';
 import {apiGet} from '../utilities/request-helper';
 
 export default class LocationReportsSearch extends React.Component {
@@ -84,7 +84,7 @@ export default class LocationReportsSearch extends React.Component {
                     </FormGroup>
                     <Button type='submit'>Search</Button>
                 </Form>
-                <SearchResult results={this.state.results} />
+                <SearchLocationResult results={this.state.results} />
             </div>
         );
     }

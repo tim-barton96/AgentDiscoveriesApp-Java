@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {Panel} from 'react-bootstrap';
+import {Panel, Button} from 'react-bootstrap';
+import moment from 'moment';
 
-export default class SearchResult extends React.Component {
+export default class SearchLocationResult extends React.Component {
     render() {
         return (
             <div className='results'>
@@ -12,30 +13,29 @@ export default class SearchResult extends React.Component {
     }
 
     renderResults(results) {
-        return results.map((result, reportId) => {
+        return results.map((result) => {
+            const date = moment(result.reportTime).format('DD/mm/YYYY');
             return (
-                <Panel key={reportId}>
-                    <Panel.Heading>Result</Panel.Heading>
+                <Panel key={result.reportId}>
+                    <Panel.Heading>
+                        <p>Status Report {result.reportId} - {date}</p>
+                        <Button variant="outline-primary">PDF</Button>
+                    </Panel.Heading>
                     <Panel.Body>{this.renderResultBody(result)}</Panel.Body>
                 </Panel>
             );
         });
     }
 
-    // renderResultBody(result) {
-    //     return Object.keys(result).map(key => {
-    //         return <p key={key} id={key}>{`${key}: ${result[key]}`}</p>;
-    //     });
-    // }
-
     renderResultBody(result) {
+        const time = moment(result.reportTime).format('LT');
         return (
             <React.Fragment>
                 <div className='meta-info-container'>
                     <p>Title: {result.reportTitle} </p>
                     <p>Agent: {result.agentId}</p>
                     <p>Status: {result.status}</p>
-                    <p className='time'>Date: {result.reportTime}</p>
+                    <p>Time: {time}</p>
                 </div>
                 <p>{result.reportBody}</p>
             </React.Fragment>

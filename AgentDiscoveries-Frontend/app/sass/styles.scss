@@ -78,11 +78,22 @@ body {
   opacity: 0.8;
 }
 
-.panel-body {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.panel-body::before, .panel-body::after {
-  display: none;
+.panel {
+  .panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    p {
+      margin: 5px 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+  .panel-body{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .panel-body::before, .panel-body::after {
+    display: none;
+  }
 }

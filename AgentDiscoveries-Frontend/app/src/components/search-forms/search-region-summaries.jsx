@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import Message from '../message';
-import SearchResult from './search-result';
+// import SearchResult from './search-result';
 import moment from 'moment/moment';
 import QueryString from 'query-string';
 import {apiGet} from '../utilities/request-helper';
@@ -84,7 +84,7 @@ export default class RegionSummariesSearch extends React.Component {
                     <Button type='submit'>Search</Button>
                 </Form>
 
-                <SearchResult results={this.state.results} />
+                {/* <SearchResult results={this.state.results} /> */}
             </div>
         );
     }
