@@ -52,12 +52,12 @@ export default class RegionSummarySubmit extends React.Component {
                     <FormGroup>
                         <ControlLabel>Status</ControlLabel>
                         <FormControl type='number' required 
-                            placeholder='Enter numeric status code between 0 and 100'
+                            placeholder='Enter numeric status code between 0 and 1000'
                             value={this.state.status}
                             onChange={this.onStatusChange} 
-                            pattern='^[0-9]$|^[1-9][0-9]$|^(100)$'
+                            pattern='^[0-9]$|^[1-9][0-9]$|^(1000)$'
                             min={0}
-                            max={100}
+                            max={1000}
                             id="status-input"/>
                     </FormGroup>
                     <FormGroup>
