@@ -36,10 +36,9 @@ export function isAdmin(){
 export function isAgent(){
     return window.localStorage.getItem('Agent') === 'true';
 }
-export function currentDateTime(){
+export function currentDateTimeEULondon(){
     return new Date().toLocaleString('en-GB',{timeZone:'Europe/London'});
 }
-
 // Fire a 'login' event when the user info is updated.
 // Components may listen for this event to update internal state (e.g. displaying nav bar options)
 function updateListeners() {

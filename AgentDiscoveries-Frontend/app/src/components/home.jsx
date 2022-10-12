@@ -1,14 +1,23 @@
 import * as React from 'react';
 import { Redirect} from 'react-router-dom';
-import { currentDateTime } from './utilities/user-helper';
+import { currentDateTimeEULondon} from './utilities/user-helper';
 
 export default class Home extends React.Component {
+
+
+    
+
+
+
+
+
+
 
 
     constructor(props) {
         super(props);
         this.state = {
-            currentDateTime: currentDateTime(),
+            currentDateTimeEULondon: currentDateTimeEULondon(),
         };
     }
     render() {
@@ -17,7 +26,8 @@ export default class Home extends React.Component {
                 {!this.props.isLoggedIn && this.renderLogInRedirect()}
                 {this.props.isAgent && this.renderAgentHome()}
                 {this.props.isAdmin && this.renderAdminHome()}
-                <h2>{this.state.currentDateTime}</h2>
+                <h2>The Current time is:</h2>
+                <h2>London: {this.state.currentDateTimeEULondon}</h2>
             </React.Fragment>
         );
     }
