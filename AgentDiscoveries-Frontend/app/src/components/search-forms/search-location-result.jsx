@@ -29,6 +29,7 @@ export default class SearchLocationResult extends React.Component {
 
     renderResultBody(result) {
         const time = moment(result.reportTime).format('LT');
+        
         return (
             <React.Fragment>
                 <div className='meta-info-container'>
