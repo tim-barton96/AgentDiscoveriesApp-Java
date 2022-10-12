@@ -24,7 +24,7 @@ public class ReportBase {
     }
 
     public void setStatus(int status) {
-        if(status < 0 || status > 100) {
+        if(status < 0 || status > 1000) {
             throw new IllegalArgumentException(status + "is not a valid status.");
         }
         this.status = status;
