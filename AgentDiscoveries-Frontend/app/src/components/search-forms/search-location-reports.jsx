@@ -13,6 +13,7 @@ export default class LocationReportsSearch extends React.Component {
         this.state = {
             agentId: '',
             locationId: '',
+            title: '',
             fromTime: '',
             toTime: '',
 
@@ -23,6 +24,7 @@ export default class LocationReportsSearch extends React.Component {
         };
 
         this.onAgentIdChange = this.onAgentIdChange.bind(this);
+        this.onTitleChange = this.onTitleChange.bind(this);
         this.onLocationChange = this.onLocationChange.bind(this);
         this.onFromChange = this.onFromChange.bind(this);
         this.onToChange = this.onToChange.bind(this);
@@ -62,6 +64,13 @@ export default class LocationReportsSearch extends React.Component {
                     </FormGroup>
                     
                     <FormGroup>
+                        <ControlLabel>Title</ControlLabel>
+                        <FormControl type='text'
+                            placeholder='Enter title'
+                            value={this.state.title}
+                            onChange={this.onTitleChange}/>
+                    </FormGroup>
+                    <FormGroup>
                         <ControlLabel>Location</ControlLabel>
                         <FormControl componentClass='select' required
                             value={this.state.locationId}
@@ -92,7 +101,9 @@ export default class LocationReportsSearch extends React.Component {
     onAgentIdChange(event) {
         this.setState({ agentId: event.target.value });
     }
-
+    onTitleChange(event){
+        this.setState({ title: event.target.value });
+    }
     onLocationChange(event) {
         this.setState({ locationId: parseInt(event.target.value) });
     }
@@ -110,6 +121,7 @@ export default class LocationReportsSearch extends React.Component {
 
         const params = {
             agentId: this.state.agentId,
+            title: this.state.title,
             locationId: this.state.locationId,
             fromTime: this.state.fromTime && moment.utc(this.state.fromTime).startOf('day').toISOString(),
             toTime: this.state.toTime && moment.utc(this.state.toTime).endOf('day').toISOString()
