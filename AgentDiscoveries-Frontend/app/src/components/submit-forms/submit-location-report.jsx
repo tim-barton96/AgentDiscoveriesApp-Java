@@ -12,14 +12,17 @@ export default class LocationReportSubmit extends React.Component {
 
             locationId: '',
             status: '',
+            reportTitle: '',
             reportBody: '',
             sendExternal: false,
-
             messages: []
         };
+        // this.onLogInEvent = this.onLogInEvent.bind(this);
+        // this.handleLogOut = this.onLogInEvent.bind(this);
 
         this.onLocationChange = this.onLocationChange.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
+        this.onReportTitleChange = this.onReportTitleChange.bind(this);
         this.onReportBodyChange = this.onReportBodyChange.bind(this);
         this.onExternalChange = this.onExternalChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -30,7 +33,21 @@ export default class LocationReportSubmit extends React.Component {
             .then(results => this.setState({ locations: results }))
             .catch(() => this.addMessage('Error fetching locations, please try again later', 'danger'));
     }
+    // componentDidMount(){
+    //     window.addEventListener('login',this.onLogInEvent);
+    // }
+    // componentWillUnmount(){
+    //     window.addEventListener('login',this.onLogInEvent);
+    // }
+    // onLogInEvent(){
+    //     this.setState({
+    //         isLoggedIn: isLoggedIn(),
+    //         isAdmin: isAdmin(),
+    //         isAgent: isAgent(),
 
+    //     });
+
+    
     render() {
         return (
             <div className='col-md-8 col-md-offset-2'>
@@ -60,6 +77,16 @@ export default class LocationReportSubmit extends React.Component {
                             min={0}
                             max={100}
                             id="status-input"/>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <ControlLabel>Title</ControlLabel>
+                        <FormControl type='text' required
+                            componentClass='textarea' rows={1}
+                            placeholder='Write title'
+                            value={this.state.reportTitle}
+                            onChange={this.onReportTitleChange}
+                            id="title-input"/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Report</ControlLabel>
@@ -91,6 +118,10 @@ export default class LocationReportSubmit extends React.Component {
         this.setState({ status: event.target.value && parseInt(event.target.value)});
     }
 
+    onReportTitleChange(event) {
+        this.setState({ reportTitle: event.target.value });
+    }    
+
     onReportBodyChange(event) {
         this.setState({ reportBody: event.target.value });
     }
@@ -107,6 +138,7 @@ export default class LocationReportSubmit extends React.Component {
         const body = {
             locationId: this.state.locationId,
             status: this.state.status,
+            reportTitle: this.state.reportTitle,
             reportBody: this.state.reportBody,
             sendExternal: this.state.sendExternal
         };

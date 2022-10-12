@@ -7,6 +7,7 @@ public class ReportBase {
     private int reportId;
     private int status;
     private LocalDateTime reportTime; // Always UTC in the DB
+    private String reportTitle;
     private String reportBody;
     private int agentId;
 
@@ -36,6 +37,15 @@ public class ReportBase {
     public void setReportTime(LocalDateTime reportTime) {
         this.reportTime = reportTime;
     }
+
+    public String getReportTitle() {
+        return reportTitle;
+    }
+
+    public void setReportTitle(String reportTitle) {
+        this.reportTitle = reportTitle;
+    }
+
 
     public String getReportBody() {
         return reportBody;
