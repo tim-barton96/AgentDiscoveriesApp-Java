@@ -17,6 +17,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
+import javax.xml.bind.DatatypeConverter;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +36,7 @@ import java.util.Arrays.*;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.HexFormat;
 
 /**
  * The MessageProcessor selects a word from a list and applies a shift cipher.
@@ -68,8 +71,9 @@ public class MessageProcessor {
         String salt = "12345678"; //generate salt from date function
         String algorithm = "AES/CBC/PKCS5Padding";
         IvParameterSpec ivParameterSpec = generateIv(); // need to add IV to start of the cipher text 
+        String hexString = ivToHexString(ivParameterSpec);
         SecretKey key = getKeyFromPassword(password, salt);
-        String cipherText = ivParameterSpec + "" + encrypt(algorithm, message, key, ivParameterSpec);
+        String cipherText = hexString + encrypt(algorithm, message, key, ivParameterSpec);
         //String cipherText = ivParameterSpec + tempCipherText;
 
         return cipherText;
@@ -79,17 +83,18 @@ public class MessageProcessor {
     InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
         String salt = "12345678"; //generate salt from date function
         String algorithm = "AES/CBC/PKCS5Padding";
-        IvParameterSpec ivParameterSpec = generateIv(); // need to read IV from the start of the cipher text
-        //String strSub = cipherText.substring(0, 15);
-        // byte[] ivParameterSpec = Arrays.copyOfRange(cipherText, 0, 16);
+
+        String hexIv = cipherText.substring(0, 32); //account for all hex digits
+        String cipherMinusHex = cipherText.substring(32);
+        IvParameterSpec ivParameterSpec = hexStringToIv(hexIv); 
 
         SecretKey key = getKeyFromPassword(password, salt);
-        String decryptedCipherText = decrypt(algorithm, cipherText, key, ivParameterSpec);
+
+        String decryptedCipherText = decrypt(algorithm, cipherMinusHex, key, ivParameterSpec);
 
         return decryptedCipherText;
     }
 
-    //new code
     public SecretKey generateKey(int n) throws NoSuchAlgorithmException {
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(n); // 128 / 192 / 256
@@ -99,11 +104,11 @@ public class MessageProcessor {
     
 
     public static SecretKey getKeyFromPassword(String password, String salt)
-    throws NoSuchAlgorithmException, InvalidKeySpecException {
+    throws NoSuchAlgorithmException, InvalidKeySpecException {//needs more speeddddddddddddddddddddddddddddddddddddddd
     
     SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
-    SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
+    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 32768, 128);
+     SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
         .getEncoded(), "AES");
     return secret;
     }
@@ -114,16 +119,33 @@ public class MessageProcessor {
         return new IvParameterSpec(iv);
     }
 
+    public String ivToHexString(IvParameterSpec ivParameterSpec) {
+        byte[] tempBytes = ivParameterSpec.getIV();
+        StringBuilder hexIVAsStringTemp = new StringBuilder(); // needs to do 32 hex digits
+        //for (int i = 0; i >= 15; i++) {
+        for (byte b : tempBytes) {
+            hexIVAsStringTemp.append(String.format("%02X ", b));
+        }
+        String hexIVAsString = hexIVAsStringTemp.toString().replaceAll(" ", "");
+        return hexIVAsString.toString();
+    }
+
+    public IvParameterSpec hexStringToIv(String hexString) { //does this need to change?
+        byte[] bytes = DatatypeConverter.parseHexBinary(hexString);
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(bytes);
+        return ivParameterSpec;
+    }
+
     public static String encrypt(String algorithm, String input, SecretKey key,
     IvParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException,
     InvalidAlgorithmParameterException, InvalidKeyException,
     BadPaddingException, IllegalBlockSizeException {
     
-    Cipher cipher = Cipher.getInstance(algorithm);
-    cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-    byte[] cipherText = cipher.doFinal(input.getBytes());
-    return Base64.getEncoder()
-        .encodeToString(cipherText);
+        Cipher cipher = Cipher.getInstance(algorithm);
+        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+        byte[] cipherText = cipher.doFinal(input.getBytes());
+        return Base64.getEncoder()
+            .encodeToString(cipherText);
     }
 
     public static String decrypt(String algorithm, String cipherText, SecretKey key,
@@ -131,13 +153,18 @@ public class MessageProcessor {
     InvalidAlgorithmParameterException, InvalidKeyException,
     BadPaddingException, IllegalBlockSizeException {
     
-    Cipher cipher = Cipher.getInstance(algorithm);
-    cipher.init(Cipher.DECRYPT_MODE, key, iv);
-    byte[] plainText = cipher.doFinal(Base64.getDecoder()
-        .decode(cipherText));
-    return new String(plainText);
-    } // end of new code
+        Cipher cipher = Cipher.getInstance(algorithm);
+        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+        byte[] plainText = cipher.doFinal(Base64.getDecoder()
+            .decode(cipherText));
+        return new String(plainText);
+    } 
 
+    public String saltCreator() {
+        java.time.LocalDate.now();
+
+        return salt;
+    }
 
 
     private final String seed;

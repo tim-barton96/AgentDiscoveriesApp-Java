@@ -74,17 +74,17 @@ public class MessageProcessorTest {
         Assertions.assertEquals(plainText, decryptedCipherText);
     }
 
-    // @Test
-    // void again_givenPassword_whenEncrypt_thenSuccess() 
-    //     throws InvalidKeySpecException, NoSuchAlgorithmException, 
-    //     IllegalBlockSizeException, InvalidKeyException, BadPaddingException, 
-    //     InvalidAlgorithmParameterException, NoSuchPaddingException {
+    @Test
+    void again_givenPassword_whenEncrypt_thenSuccess() 
+        throws InvalidKeySpecException, NoSuchAlgorithmException, 
+        IllegalBlockSizeException, InvalidKeyException, BadPaddingException, 
+        InvalidAlgorithmParameterException, NoSuchPaddingException {
         
-    //     String plainText = "www.baeldung.com";
-    //     String password = "baeldung";
-    //     IvParameterSpec ivParameterSpec = messageProcessor.generateIv();
-    //     String cipherText = messageProcessor.encodeM(plainText, password, ivParameterSpec);
-    //     String decryptedCipherText = messageProcessor.decodeM(cipherText, password, ivParameterSpec);
-    //     Assertions.assertEquals(plainText, decryptedCipherText);
-    // }
+        String plainText = "www.baeldung.com";
+        String password = "baeldung";
+        //IvParameterSpec ivParameterSpec = messageProcessor.generateIv();
+        String cipherText = messageProcessor.encodeM(plainText, password);
+        String decryptedCipherText = messageProcessor.decodeM(cipherText, password);
+        Assertions.assertEquals(plainText, decryptedCipherText);
+    }
 }
