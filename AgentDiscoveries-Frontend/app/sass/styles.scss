@@ -78,7 +78,23 @@ body {
   opacity: 0.8;
 }
 
+input[type=number]:invalid:focus {
+  border: 1px solid red;
+}
+ 
+input[type=number]:valid:focus {
+  border: 1px solid green;
+}
+
+input[type=number]:empty{
+  border: 1px solid transparentize($color: gray, $amount: 0.5);
+}
+
+input[type=number]:not(:placeholder-shown):invalid{
+  border: 1px solid red;
+
 .panel-body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
 }

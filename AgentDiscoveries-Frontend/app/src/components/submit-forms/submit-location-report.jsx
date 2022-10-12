@@ -3,7 +3,6 @@ import {Button, Checkbox, ControlLabel, Form, FormControl, FormGroup} from 'reac
 import {apiGet, apiPost} from '../utilities/request-helper';
 import {Messages} from '../message';
 
-
 export default class LocationReportSubmit extends React.Component {
     constructor(props) {
         super(props);
@@ -71,9 +70,12 @@ export default class LocationReportSubmit extends React.Component {
                     <FormGroup>
                         <ControlLabel>Status</ControlLabel>
                         <FormControl type='number' required
-                            placeholder='Enter numeric status code'
+                            placeholder='Enter numeric status code between 0 and 100'
                             value={this.state.status}
                             onChange={this.onStatusChange}
+                            pattern='^[0-9]$|^[1-9][0-9]$|^(100)$'
+                            min={0}
+                            max={100}
                             id="status-input"/>
                     </FormGroup>
 
@@ -112,8 +114,8 @@ export default class LocationReportSubmit extends React.Component {
         this.setState({ locationId: event.target.value && parseInt(event.target.value) });
     }
 
-    onStatusChange(event) {
-        this.setState({ status: event.target.value && parseInt(event.target.value) });
+    onStatusChange(event){
+        this.setState({ status: event.target.value && parseInt(event.target.value)});
     }
 
     onReportTitleChange(event) {
