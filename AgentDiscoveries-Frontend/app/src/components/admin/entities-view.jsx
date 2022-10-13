@@ -43,14 +43,25 @@ export default class Entities extends React.Component {
         }
     }
 
+    getTableHeaders(key) {
+        if (key === 'users') {
+            return ['userId', 'username', 'agentId', 'admin', 'agent'];
+        } else if (key === 'regions'){
+            return ['regionId', 'name'];
+        } else if (key === 'locations') {
+            return ['locationId', 'siteName', 'location', 'timeZone', 'regionId', 'longitude', 'latitude'];
+        }
+    }
+
     renderTableHeader() {
         // Only rendering the table if there is an entity.
         // In this case, use the first to extract the header labels
-        const entity = this.state.entities[0];
+        // const entity = this.state.entities[0];
+        
         return (
             <thead>
                 <tr>
-                    {Object.keys(entity).map(key => <th key={key}>{key}</th>)}
+                    {this.getTableHeaders(this.props.api).map(key => <th key={key}>{key}</th>)}
                 </tr>
             </thead>
         );
@@ -62,7 +73,7 @@ export default class Entities extends React.Component {
                 {this.state.entities.map(entity => {
                     // Assume the first property is the ID, or at least unique enough to use as a key.
                     const id = Object.values(entity)[0];
-                    return <Entity key={id} entity={entity} type={this.props.api} />;
+                    return <Entity key={id} getTableHeaders={this.getTableHeaders} entity={entity} type={this.props.api} />;
                 })}
             </tbody>
         );

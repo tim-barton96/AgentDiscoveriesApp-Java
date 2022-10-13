@@ -22,8 +22,9 @@ export default class Entity extends React.Component {
     }
 
     getEntityRow() {
-        return Object.keys(this.props.entity).map(key =>
-            <td key={key}>{this.props.entity[key].toString()}</td>);
+        return this.props.getTableHeaders(this.props.type)
+            .map(key =>
+                <td key={key}>{this.props.entity[key]?this.props.entity[key].toString():'-'}</td>);
     }
 
     getEditButton() {
