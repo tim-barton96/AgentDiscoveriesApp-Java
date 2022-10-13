@@ -4,7 +4,6 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.configuration2.Configuration;
-//import org.apache.commons.configuration2.EnvironmentConfiguration;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -83,19 +82,11 @@ public class MessageProcessor {
         String decryptedCipherText = decrypt(algorithm, cipherMinusHex, key, ivParameterSpec);
         return decryptedCipherText;
     }
-
-    public SecretKey generateKey(int n) throws NoSuchAlgorithmException {
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
-        generator.init(n); // 128 / 192 / 256
-        SecretKey key = generator.generateKey();
-        return key;
-    }
     
-
     public static SecretKey getKeyFromPassword(String password, String salt)
     throws NoSuchAlgorithmException, InvalidKeySpecException {//speed affected by iteration count
     SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 1248, 128);
+    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 5000, 256);
      SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
         .getEncoded(), "AES");
     return secret;

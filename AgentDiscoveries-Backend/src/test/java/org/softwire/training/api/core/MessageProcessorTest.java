@@ -44,45 +44,13 @@ public class MessageProcessorTest {
     }
 
     @Test
-    void givenString_whenEncrypt_thenSuccess()
-        throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException,
-        BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException { 
-        
-        String input = "baeldung";
-        SecretKey key = messageProcessor.generateKey(128);
-        IvParameterSpec ivParameterSpec = messageProcessor.generateIv();
-        String algorithm = "AES/CBC/PKCS5Padding";
-        String cipherText = messageProcessor.encrypt(algorithm, input, key, ivParameterSpec);
-        String plainText = messageProcessor.decrypt(algorithm, cipherText, key, ivParameterSpec);
-        Assertions.assertEquals(input, plainText);
-    }
-
-    @Test
     void givenPassword_whenEncrypt_thenSuccess() 
-        throws InvalidKeySpecException, NoSuchAlgorithmException, 
-        IllegalBlockSizeException, InvalidKeyException, BadPaddingException, 
-        InvalidAlgorithmParameterException, NoSuchPaddingException {
-        
-        String plainText = "www.baeldung.commmmmm";
-        String password = "baeldung";
-        String salt = "12345678";
-        String algorithm = "AES/CBC/PKCS5Padding";
-        IvParameterSpec ivParameterSpec = messageProcessor.generateIv();
-        SecretKey key = messageProcessor.getKeyFromPassword(password,salt);
-        String cipherText = messageProcessor.encrypt(algorithm, plainText, key, ivParameterSpec);
-        String decryptedCipherText = messageProcessor.decrypt(algorithm, cipherText, key, ivParameterSpec);
-        Assertions.assertEquals(plainText, decryptedCipherText);
-    }
-
-    @Test
-    void again_givenPassword_whenEncrypt_thenSuccess() 
         throws InvalidKeySpecException, NoSuchAlgorithmException, 
         IllegalBlockSizeException, InvalidKeyException, BadPaddingException, 
         InvalidAlgorithmParameterException, NoSuchPaddingException {
         
         String plainText = "www.baeldung.com";
         String password = "baeldung";
-        //IvParameterSpec ivParameterSpec = messageProcessor.generateIv();
         String cipherText = messageProcessor.encodeM(plainText, password);
         String decryptedCipherText = messageProcessor.decodeM(cipherText, password);
         Assertions.assertEquals(plainText, decryptedCipherText);
