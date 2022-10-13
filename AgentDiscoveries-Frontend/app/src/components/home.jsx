@@ -5,14 +5,6 @@ import { currentDateTimeEULondon} from './utilities/user-helper';
 //import {apiGet} from '../utilities/request-helper';
 
 export default class Home extends React.Component {
-
-    // renderResultBody(result) {
-    //     return Object.keys(result).map(key => {
-    //         return <p key={key} id={key}>{`${key}: ${result[key]}`}</p>;
-    //     });
-    // }
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +14,7 @@ export default class Home extends React.Component {
     }
     componentDidMount(){
         apiGet('locations')
-            .then(reults => filterLocations(results))
+            .then(results => filterLocations(results))
             .catch(() => this.addMessage('Error fetching timezones, please try again later'));
     }
     filterLocations(results){
@@ -32,7 +24,6 @@ export default class Home extends React.Component {
             }
         })
     }
-
     render() {
         return (
             <React.Fragment>
