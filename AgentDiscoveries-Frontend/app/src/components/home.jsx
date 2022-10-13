@@ -11,17 +11,17 @@ export default class Home extends React.Component {
             currentDateTimeEULondon: currentDateTimeEULondon(),
             timeZones: [],
         };
+        this.filterLocations = this.filterLocations.bind(this);
     }
     componentDidMount(){
         apiGet('locations')
             .then(results => this.filterLocations(results))
-            .catch(() => this.addMessage('Error fetching timezones, please try again later'));
+            .catch(() => console.log('error'));
     }
     filterLocations(results){
-        results.array.forEach(result => {
-            if (!this.state.timeZones.contains(result)){
-                this.setState({timeZones:[...this.state.timeZones,result]});
-       
+        results.forEach(result => {
+            if (!this.state.timeZones.includes(result.timeZone)){
+                this.setState({timeZones:[...this.state.timeZones,result.timeZone]});
             }
         });
     }
@@ -32,7 +32,7 @@ export default class Home extends React.Component {
                 {this.props.isAgent && this.renderAgentHome()}
                 {this.props.isAdmin && this.renderAdminHome()}
                 <h2>The Current time is:</h2>
-                {this.renderTimeZones(this.state.results)}
+                {this.renderTimeZones(this.state.timeZones)}
             </React.Fragment>
         );
     }
@@ -58,13 +58,13 @@ export default class Home extends React.Component {
         );
     }
     renderTimeZones(results){
-        return results.map((result) => {
-            const date = new Date().toLocaleString('en-GB',{timeZone: result});
-            return (
-                <p key={result}>
-                    {date}
-                </p>
-            );
-        });
+        return <div> 
+            {results.map((result) => {
+                const date = new Date().toLocaleString('en-GB',{timeZone: result});
+                return (
+                    <p key={result}>{date}</p>
+                );
+            })
+            }</div>;
     }
 }
