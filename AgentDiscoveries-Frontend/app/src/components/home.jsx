@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Redirect} from 'react-router-dom';
 import { apiGet } from './utilities/request-helper';
 import { currentDateTimeEULondon} from './utilities/user-helper';
-//import {apiGet} from '../utilities/request-helper';
+
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -14,15 +14,16 @@ export default class Home extends React.Component {
     }
     componentDidMount(){
         apiGet('locations')
-            .then(results => filterLocations(results))
+            .then(results => this.filterLocations(results))
             .catch(() => this.addMessage('Error fetching timezones, please try again later'));
     }
     filterLocations(results){
         results.array.forEach(result => {
-            if (!timeZones.contains(result)){
-                timeZones.push(result);
+            if (!this.state.timeZones.contains(result)){
+                this.setState({timeZones:[...this.state.timeZones,result]});
+       
             }
-        })
+        });
     }
     render() {
         return (
@@ -31,7 +32,7 @@ export default class Home extends React.Component {
                 {this.props.isAgent && this.renderAgentHome()}
                 {this.props.isAdmin && this.renderAdminHome()}
                 <h2>The Current time is:</h2>
-                <h2>London: {this.state.currentDateTimeEULondon}</h2>
+                {this.renderTimeZones(this.state.results)}
             </React.Fragment>
         );
     }
@@ -55,5 +56,15 @@ export default class Home extends React.Component {
                 <Redirect to='/login' />
             </React.Fragment>
         );
+    }
+    renderTimeZones(results){
+        return results.map((result) => {
+            const date = new Date().toLocaleString('en-GB',{timeZone: result});
+            return (
+                <p key={result}>
+                    {date}
+                </p>
+            );
+        });
     }
 }
