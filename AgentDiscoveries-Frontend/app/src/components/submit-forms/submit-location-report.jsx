@@ -143,7 +143,6 @@ export default class LocationReportSubmit extends React.Component {
         this.setState({ attachmentName: file.name });
 
         let reader = new FileReader();
-        reader.readAsDataURL(file);
 
         reader.onload = () => {
             this.addMessage('File loaded.','info');
@@ -152,6 +151,8 @@ export default class LocationReportSubmit extends React.Component {
         reader.onerror = () => {
             this.addMessage('File failed to load','danger');
         };
+
+        reader.readAsDataURL(file);
     }
 
     onExternalChange(event) {
