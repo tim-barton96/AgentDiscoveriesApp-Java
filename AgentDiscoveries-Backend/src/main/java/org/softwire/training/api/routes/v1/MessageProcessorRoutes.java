@@ -24,19 +24,7 @@ public class MessageProcessorRoutes {
     public MessageProcessorRoutes(MessageProcessor messageProcessor) {
         this.messageProcessor = messageProcessor;
     }
-
-    // public Message encodeMessage(Request req, Response res) {
-    //     Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
-    //     String encoded = messageProcessor.encode(message.getMessage());
-    //     return new Message(encoded);
-    // }
-
-    // public Message decodeMessage(Request req, Response res) {
-    //     Message message = JsonRequestUtils.readBodyAsType(req, Message.class);
-    //     String decoded = messageProcessor.decode(message.getMessage());
-    //     return new Message(decoded);
-    // }
-
+    
     public String encodeMessage(Request req, Response res) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, 
     NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException { //needs to take password from form
         Message message = JsonRequestUtils.readBodyAsType(req, Message.class);

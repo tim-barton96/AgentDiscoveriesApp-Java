@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import {apiPost} from './utilities/request-helper';
+import SHA256 from 'crypto-js/sha256';
 
 export default class TodaysCodePage extends React.Component {
     constructor(props) {
@@ -52,8 +53,11 @@ export default class TodaysCodePage extends React.Component {
                 <div id="code-result">
                     {this.state.result ? <h3>Result</h3> : ''}
                     {this.state.result}
+                    <Form>
+                        <Button className='rm-3' onClick={() =>  navigator.clipboard.writeText(this.state.result)} disabled={!this.state.result}>Copy result</Button>
+                    </Form>
                 </div>
-                <button id="encode-button" type='submit' className='rm-3' onClick={() =>  navigator.clipboard.writeText(this.state.result)}>Copy</button>
+                
             </div>
 
         );
@@ -78,8 +82,9 @@ export default class TodaysCodePage extends React.Component {
     }
 
     handleRequest(api) {
+        let shaHash = SHA256(this.state.password).toString();
         const body = { message: this.state.message,
-            password: this.state.password };
+            password: shaHash };
 
         apiPost(api, body)
             .then(response => this.setState({ result: response }))

@@ -150,7 +150,6 @@ public class MessageProcessor {
     public String saltCreator(String hexString) {
         String salt = java.time.LocalDate.now().toString().substring(0, 5) + hexString.substring(0, 3)
          + java.time.LocalDate.now().toString().substring(6) + hexString.substring(4, 8);
-
         return salt;
     }
 
