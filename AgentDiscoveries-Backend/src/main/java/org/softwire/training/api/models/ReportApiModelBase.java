@@ -5,11 +5,11 @@ import java.time.ZonedDateTime;
 public class ReportApiModelBase {
 
     private int reportId;
-    private byte status;
+    private int status;
     private ZonedDateTime reportTime;
     private String reportTitle;
-
-
+    private String attachmentName;
+    private String attachmentContent;
     private String reportBody;
     private int agentId;
 
@@ -21,11 +21,11 @@ public class ReportApiModelBase {
         this.reportId = reportId;
     }
 
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -61,10 +61,27 @@ public class ReportApiModelBase {
         this.agentId = agentId;
     }
 
+    public String getAttachmentName() {
+        return attachmentName;
+    }
+
+    public void setAttachmentName(String attachmentName) {
+        this.attachmentName = attachmentName;
+    }
+
+    public String getAttachmentContent() {
+        return attachmentContent;
+    }
+
+    public void setAttachmentContent(String attachmentContent) {
+        this.attachmentContent = attachmentContent;
+    }
+
     @Override
     public String toString() {
         return "ReportApiModelBase [reportId=" + reportId + ", status=" + status + ", reportTime=" + reportTime
-                + ", reportTitle=" + reportTitle + ", reportBody=" + reportBody + ", agentId=" + agentId + "]";
+                + ", reportTitle=" + reportTitle + ", reportBody=" + reportBody + ", agentId=" + agentId +
+                ", attachmentName=" + attachmentName + "]";
     }
 
     

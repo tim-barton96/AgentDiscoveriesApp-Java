@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 public class ReportBase {
 
     private int reportId;
-    private byte status;
+    private int status;
     private LocalDateTime reportTime; // Always UTC in the DB
     private String reportTitle;
     private String reportBody;
+    private String attachmentName;
+    private String attachmentContent;
     private int agentId;
 
     public int getReportId() {
@@ -19,11 +21,14 @@ public class ReportBase {
         this.reportId = reportId;
     }
 
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
+        if(status < 0 || status > 1000) {
+            throw new IllegalArgumentException(status + "is not a valid status.");
+        }
         this.status = status;
     }
 
@@ -55,4 +60,22 @@ public class ReportBase {
     public int getAgentId() { return agentId; }
 
     public void setAgentId(int agentId) { this.agentId = agentId; }
+
+    public String getAttachmentName() {
+        return attachmentName;
+    }
+
+    public void setAttachmentName(String attachmentName) {
+        this.attachmentName = attachmentName;
+    }
+
+    public String getAttachmentContent() {
+        return attachmentContent;
+    }
+
+    public void setAttachmentContent(String attachmentContent) {
+        this.attachmentContent = attachmentContent;
+    }
+
+
 }

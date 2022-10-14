@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import {apiPost} from './utilities/request-helper';
+import SHA256 from 'crypto-js/sha256';
 
 export default class TodaysCodePage extends React.Component {
     constructor(props) {
@@ -8,10 +9,12 @@ export default class TodaysCodePage extends React.Component {
 
         this.state = {
             message: '',
+            password: '',
             result: ''
         };
 
-        this.onChange = this.onChange.bind(this);
+        this.onMessageChange = this.onMessageChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
         this.handleDecode = this.handleDecode.bind(this);
         this.handleEncode = this.handleEncode.bind(this);
         this.handleRequest = this.handleRequest.bind(this);
@@ -31,7 +34,15 @@ export default class TodaysCodePage extends React.Component {
                             componentClass='textarea' rows={6}
                             placeholder='Enter message'
                             value={this.state.message}
-                            onChange={this.onChange}/>
+                            onChange={this.onMessageChange}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>Password</ControlLabel>
+                        <FormControl type='password' required
+                            id='password-input'
+                            placeholder='Enter password'
+                            value={this.state.password}
+                            onChange={this.onPasswordChange}/>
                     </FormGroup>
 
                     <Button id="encode-button" className='rm-3' type='submit' onClick={this.handleEncode}>Encode</Button>
@@ -41,15 +52,23 @@ export default class TodaysCodePage extends React.Component {
 
                 <div id="code-result">
                     {this.state.result ? <h3>Result</h3> : ''}
-                    {this.state.result}
+                    {this.state.result ? <textarea value={this.state.result} rows='4' className='form-control' ></textarea> : ''}
+                    {this.state.result ? <Form>
+                        <Button className='rm-3' onClick={() =>  navigator.clipboard.writeText(this.state.result)} disabled={!this.state.result}>Copy result</Button>
+                    </Form> : ''}
                 </div>
+                
             </div>
 
         );
     }
 
-    onChange(event) {
+    onMessageChange(event) {
         this.setState({ message: event.target.value });
+    }
+
+    onPasswordChange(event) {
+        this.setState({ password: event.target.value });
     }
 
     handleEncode(event) {
@@ -63,10 +82,12 @@ export default class TodaysCodePage extends React.Component {
     }
 
     handleRequest(api) {
-        const body = { message: this.state.message };
+        let shaHash = SHA256(this.state.password).toString();
+        const body = { message: this.state.message,
+            password: shaHash };
 
         apiPost(api, body)
-            .then(response => this.setState({ result: response.message }))
+            .then(response => this.setState({ result: response }))
             .catch(error => this.setState({ result: error.message }));
     }
 }

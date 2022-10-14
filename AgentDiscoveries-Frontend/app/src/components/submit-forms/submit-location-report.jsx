@@ -3,18 +3,21 @@ import {Button, Checkbox, ControlLabel, Form, FormControl, FormGroup} from 'reac
 import {apiGet, apiPost} from '../utilities/request-helper';
 import {Messages} from '../message';
 
-
 export default class LocationReportSubmit extends React.Component {
+
     constructor(props) {
         super(props);
 
         this.state = {
             locations: [],
-
+            
+            reportSubmitted: false, 
             locationId: '',
             status: '',
             reportTitle: '',
             reportBody: '',
+            attachmentName: '',
+            attachmentContent: '',
             sendExternal: false,
             messages: []
         };
@@ -25,6 +28,7 @@ export default class LocationReportSubmit extends React.Component {
         this.onStatusChange = this.onStatusChange.bind(this);
         this.onReportTitleChange = this.onReportTitleChange.bind(this);
         this.onReportBodyChange = this.onReportBodyChange.bind(this);
+        this.onReportAttachmentChange = this.onReportAttachmentChange.bind(this);
         this.onExternalChange = this.onExternalChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -48,7 +52,7 @@ export default class LocationReportSubmit extends React.Component {
 
     //     });
 
-    
+
     render() {
         return (
             <div className='col-md-8 col-md-offset-2'>
@@ -71,9 +75,12 @@ export default class LocationReportSubmit extends React.Component {
                     <FormGroup>
                         <ControlLabel>Status</ControlLabel>
                         <FormControl type='number' required
-                            placeholder='Enter numeric status code'
+                            placeholder='Enter numeric status code between 0 and 1000'
                             value={this.state.status}
                             onChange={this.onStatusChange}
+                            pattern='^[0-9]$|^[1-9][0-9]$|^(1000)$'
+                            min={0}
+                            max={1000}
                             id="status-input"/>
                     </FormGroup>
 
@@ -96,13 +103,21 @@ export default class LocationReportSubmit extends React.Component {
                             id="report-input"/>
                     </FormGroup>
                     <FormGroup>
+                        <ControlLabel>Attach file</ControlLabel>
+                        <FormControl type="file"
+                            placeholder="Upload file"
+                            value={this.state.attachment}
+                            onChange={this.onReportAttachmentChange}
+                            id="attach-input"/>
+                    </FormGroup>
+                    <FormGroup>
                         <Checkbox type='checkbox'
                             value={this.state.sendExternal}
                             onChange={this.onExternalChange}>
                             Send to external partner
                         </Checkbox>
                     </FormGroup>
-                    <Button type='submit' id="submit-report">Submit</Button>
+                    <Button type='submit' id="submit-report" disabled={this.state.reportSubmitted}>Submit</Button>
                 </Form>
             </div>
         );
@@ -112,16 +127,33 @@ export default class LocationReportSubmit extends React.Component {
         this.setState({ locationId: event.target.value && parseInt(event.target.value) });
     }
 
-    onStatusChange(event) {
-        this.setState({ status: event.target.value && parseInt(event.target.value) });
+    onStatusChange(event){
+        this.setState({ status: event.target.value && parseInt(event.target.value)});
     }
 
     onReportTitleChange(event) {
         this.setState({ reportTitle: event.target.value });
-    }    
+    }
 
     onReportBodyChange(event) {
         this.setState({ reportBody: event.target.value });
+    }
+
+    onReportAttachmentChange(event) {
+        let file = event.target.files[0];
+        this.setState({ attachmentName: file.name });
+
+        let reader = new FileReader();
+
+        reader.onload = () => {
+            this.addMessage('File loaded.','info');
+            this.setState({ attachmentContent: reader.result });
+        };
+        reader.onerror = () => {
+            this.addMessage('File failed to load','danger');
+        };
+
+        reader.readAsDataURL(file);
     }
 
     onExternalChange(event) {
@@ -130,6 +162,8 @@ export default class LocationReportSubmit extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
+        this.setState({ reportSubmitted : true });
+        setTimeout(() => this.setState({ reportSubmitted: false }), 1000); // button disabled for 5 seconds when report submitted
 
         this.setState({ messages: [] });
 
@@ -138,6 +172,8 @@ export default class LocationReportSubmit extends React.Component {
             status: this.state.status,
             reportTitle: this.state.reportTitle,
             reportBody: this.state.reportBody,
+            attachmentName: this.state.attachmentName,
+            attachmentContent: this.state.attachmentContent,
             sendExternal: this.state.sendExternal
         };
 
@@ -150,6 +186,13 @@ export default class LocationReportSubmit extends React.Component {
                 .then(() => this.addMessage('Report submitted to external partner', 'info'))
                 .catch(() => this.addMessage('Error submitting report externally, please try again later', 'danger'));
         }
+
+        this.setState ({
+            status: '',
+            reportTitle: '',
+            reportBody: '',
+            sendExternal: false
+        });
     }
 
     addMessage(message, type) {

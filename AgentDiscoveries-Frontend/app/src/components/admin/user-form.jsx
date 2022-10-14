@@ -9,6 +9,7 @@ export default class UserForm extends React.Component {
         super(props);
 
         this.state = {
+            formSubmitted: false,
             username: '',
             password: '',
             isAgent: false,
@@ -75,7 +76,7 @@ export default class UserForm extends React.Component {
                                 Admin
                             </Checkbox>
                         </FormGroup>
-                        <Button type='submit'>Submit</Button>
+                        <Button type='submit' disabled={this.state.formSubmitted}>Submit</Button>
                     </Form>
                 </div>
             </div>
@@ -104,6 +105,8 @@ export default class UserForm extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
+        this.setState({ formSubmitted : true });
+        setTimeout(() => this.setState({ formSubmitted: false }), 1000);
 
         const agentIdPromise = this.state.isAgent
             ? this.state.agentId
@@ -117,8 +120,8 @@ export default class UserForm extends React.Component {
                     username: this.state.username,
                     password: this.state.password,
                     agentId: agentId,
-                    admin: this.state.isAdmin, //
-                    agent: this.state.isAgent //
+                    admin: this.state.isAdmin, 
+                    agent: this.state.isAgent 
                 };
                 return this.props.id
                     ? apiPut('users', user, this.props.id)

@@ -169,6 +169,8 @@ export default class LocationForm extends React.Component {
     
     onSubmit(event) {
         event.preventDefault();
+        this.setState({ formValid : false });
+        setTimeout(() => this.setState({ formSubmitted: true }), 1000);
 
         const body = {
             siteName: this.state.siteName,

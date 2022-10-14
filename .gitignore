@@ -1,4 +1,5 @@
 target/
 .idea
 *.iml
+AgentDiscoveries-Backend/src/main/resources/config.properties
 config.properties

@@ -14,6 +14,7 @@ export default class RegionSummarySubmit extends React.Component {
             regionId: '',
             status: '',
             reportBody: '',
+            reportSubmitted: false,
 
             messages: []
         };
@@ -51,10 +52,13 @@ export default class RegionSummarySubmit extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Status</ControlLabel>
-                        <FormControl type='number' required
-                            placeholder='Enter numeric status code'
+                        <FormControl type='number' required 
+                            placeholder='Enter numeric status code between 0 and 1000'
                             value={this.state.status}
-                            onChange={this.onStatusChange}
+                            onChange={this.onStatusChange} 
+                            pattern='^[0-9]$|^[1-9][0-9]$|^(1000)$'
+                            min={0}
+                            max={1000}
                             id="status-input"/>
                     </FormGroup>
                     <FormGroup>
@@ -66,7 +70,7 @@ export default class RegionSummarySubmit extends React.Component {
                             onChange={this.onReportBodyChange}
                             id="report-input"/>
                     </FormGroup>
-                    <Button type='submit' id="submit-report">Submit</Button>
+                    <Button type='submit' id="submit-report" disabled={this.state.reportSubmitted}>Submit</Button>
                 </Form>
             </div>
         );
@@ -87,6 +91,9 @@ export default class RegionSummarySubmit extends React.Component {
     onSubmit(event) {
         event.preventDefault();
 
+        this.setState({ reportSubmitted : true });
+        setTimeout(() => this.setState({ reportSubmitted: false }), 1000);
+
         const body = {
             regionId: this.state.regionId,
             status: this.state.status,
@@ -101,6 +108,12 @@ export default class RegionSummarySubmit extends React.Component {
     addMessage(message, type) {
         this.setState(oldState => {
             return { messages: [...oldState.messages, { message: message, type: type }] };
+        });
+
+        this.setState ({
+            regionId: '',
+            reportBody: '',
+            status: ''
         });
     }
 }

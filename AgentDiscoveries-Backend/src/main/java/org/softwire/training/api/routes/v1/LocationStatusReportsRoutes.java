@@ -49,6 +49,8 @@ public class LocationStatusReportsRoutes extends ReportsRoutesBase<LocationStatu
         model.setReportTime(reportTimeUtc);
         model.setReportBody(apiModel.getReportBody());
         model.setReportTitle(apiModel.getReportTitle());
+        model.setAttachmentName(apiModel.getAttachmentName());
+        model.setAttachmentContent(apiModel.getAttachmentContent());
 
         return model;
     }
@@ -75,6 +77,8 @@ public class LocationStatusReportsRoutes extends ReportsRoutesBase<LocationStatu
         apiModel.setReportTime(model.getReportTime().atZone(locationTimeZone));
         apiModel.setReportBody(model.getReportBody());
         apiModel.setReportTitle(model.getReportTitle());
+        apiModel.setAttachmentName(model.getAttachmentName());
+        apiModel.setAttachmentContent(model.getAttachmentContent());
 
         return apiModel;
     }
