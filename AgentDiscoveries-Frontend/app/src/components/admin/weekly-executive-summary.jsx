@@ -3,7 +3,7 @@ import * as React from 'react';
 import { apiGet } from '../utilities/request-helper';
 
 
-export default class weeklyExecutiveSummary extends React.Component {
+export default class WeeklyExecutiveSummary extends React.Component {
     constructor(props) {
         super(props);
 
@@ -22,14 +22,20 @@ export default class weeklyExecutiveSummary extends React.Component {
 
         this.weeklyExecutiveSummaryUpdate = this.loadWeeklyExecutiveSummary.bind(this);
     }
+
+
+    componentDidMount() {
+        this.loadWeeklyExecutiveSummary();
+    }
+
     
     //call this function???
     loadWeeklyExecutiveSummary(){ 
-        const url = 'report?days=5';
+        const url = 'executivesummary?days=5';
         try {
             apiGet(url).then(resultString => {
                 this.setState({weeklyExecutiveSummaryUpdate : resultString});
-                console.log(resultString);
+                console.log(this.state.weeklyExecutiveSummaryUpdate['summary']);
 
             });
             
@@ -44,7 +50,7 @@ export default class weeklyExecutiveSummary extends React.Component {
                 <div>
                     <h3>Executive Summary Reports</h3>
                 </div>
-            
+                <p>hello</p>
             </div>
         );
                 

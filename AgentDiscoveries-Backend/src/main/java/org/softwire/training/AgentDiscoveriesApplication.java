@@ -77,7 +77,7 @@ public class AgentDiscoveriesApplication implements Runnable {
                 path("/regions", this::regionsRouteGroup);
                 path("/reports/locationstatuses", () -> reportsRouteGroup(locationStatusReportsRoutes));
                 path("/reports/regionsummaries", () -> reportsRouteGroup(regionSummaryReportsRoutes));
-                //path("/reports/weeklyexecutivesummary", () -> reportsRouteGroup(weeklyExecutiveSummaryRoutes));
+                path("/executivesummary", this::executivesSummaryGroup);
                 path("/external", this::externalRouteGroup);
 
                 setupBasicEntityCrudRoutes("/locations", locationsRoutes);

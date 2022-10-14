@@ -17,7 +17,7 @@ import TodaysCodePage from './todays-code-page';
 import LocationForm from './admin/location-form';
 import RegionForm from './admin/region-form';
 import UserForm from './admin/user-form';
-import weeklyExecutiveSummary from './admin/weekly-executive-summary';
+import WeeklyExecutiveSummary from './admin/weekly-executive-summary';
 import Error from './error';
 import { clearUserInfo, isAdmin, isAgent, isLoggedIn } from './utilities/user-helper';
 
@@ -94,7 +94,7 @@ export default class App extends React.Component {
                 <Route path='/admin/locations' exact render={() => <Page><Entities api='locations' key='locations'/></Page>} />
                 <Route path='/admin/regions' exact render={() => <Page><Entities api='regions' key='regions'/></Page>} />
                 <Route path='/admin/users' exact render={() => <Page><Entities api='users' key='users'/></Page>} />
-                <Route path='/admin/weekly-executive-summary' exact render={() => <Page><weeklyExecutiveSummary /></Page>} />
+                <Route path='/admin/weekly-executive-summary' exact render={() => <Page><WeeklyExecutiveSummary /></Page>} />
 
                 <Route path='/admin/locations/add' render={() => <Page><LocationForm/></Page>} />
                 <Route path='/admin/regions/add' render={() => <Page><RegionForm/></Page>} />
