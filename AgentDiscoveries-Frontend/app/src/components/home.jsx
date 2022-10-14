@@ -34,7 +34,7 @@ export default class Home extends React.Component {
                 {this.props.isAgent && this.renderAgentHome()}
                 {this.props.isAdmin && this.renderAdminHome()}
                 <h2>The Current time in your location is: {this.state.currentDateTimeEULondon}</h2>
-                <h3>{this.state.locations}{this.renderTimeZones(this.state.timeZones)}</h3>
+                {this.renderTimeZones(this.state.timeZones)}
             </React.Fragment>
         );
     }
@@ -64,7 +64,10 @@ export default class Home extends React.Component {
             {results.map((result) => {
                 const date = new Date().toLocaleString('en-GB',{timeZone: result});
                 return (
-                    <p key={result}>{date}</p>
+                    <div key={result}>
+                        <h2>{result}</h2>
+                        <h3>{date}</h3>
+                    </div>
                 );
             })
             }</div>;
