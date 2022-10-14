@@ -27,14 +27,16 @@ public class LocationReportsDao implements ReportsDao<LocationStatusReport> {
 
     public int createReport(LocationStatusReport report) {
         try (Handle handle = jdbi.open()) {
-            return handle.createUpdate("INSERT INTO location_reports (location_id, agent_id, status, report_time, report_title, report_body)" +
-                    " VALUES (:location_id, :agent_id, :status, :report_time, :report_title, :report_body)")
+            return handle.createUpdate("INSERT INTO location_reports (location_id, agent_id, status, report_time, report_title, report_body, attachment_name,attachment_content)" +
+                    " VALUES (:location_id, :agent_id, :status, :report_time, :report_title, :report_body, :attachment_name,:attachment_content)")
                     .bind("location_id", report.getLocationId())
                     .bind("agent_id", report.getAgentId())
                     .bind("status", report.getStatus())
                     .bind("report_time", report.getReportTime())
                     .bind("report_title", report.getReportTitle())
                     .bind("report_body", report.getReportBody())
+                    .bind("attachment_name", report.getAttachmentName())
+                    .bind("attachment_content", report.getAttachmentContent())
                     .executeAndReturnGeneratedKeys("report_id")
                     .mapTo(Integer.class)
                     .findOnly();
