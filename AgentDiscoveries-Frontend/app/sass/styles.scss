@@ -114,4 +114,8 @@ input[type=number]:empty{
 input[type=number]:not(:placeholder-shown):invalid{
   border: 1px solid red;
 }
-
+.form-group {
+  textarea {
+      resize: none;
+  }
+}
