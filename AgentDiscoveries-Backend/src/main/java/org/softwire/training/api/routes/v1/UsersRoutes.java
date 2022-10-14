@@ -112,6 +112,7 @@ public class UsersRoutes implements EntityCRUDRoutes {
         userApiModel.setUsername(user.getUsername());
         userApiModel.setAgentId(user.getAgentId());
         userApiModel.setAdmin(user.isAdmin());
+        userApiModel.setAgent(user.isAgent());
         // Deliberately do not set the password for security reasons
 
         return userApiModel;
