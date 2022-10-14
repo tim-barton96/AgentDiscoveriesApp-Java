@@ -3,3 +3,4 @@ target/
 node/
 node_modules/
 npm-debug.log
+/workspace/AgentDiscoveriesApp-Java/AgentDiscoveries-Backend/src/main/resources/config.properties
