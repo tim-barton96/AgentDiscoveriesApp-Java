@@ -9,6 +9,7 @@ export default class RegionForm extends React.Component {
 
         this.state = {
             name: '',
+            formSubmitted: false,
 
             message: {}
         };
@@ -37,7 +38,7 @@ export default class RegionForm extends React.Component {
                                 value={this.state.name}
                                 onChange={this.onNameChange}/>
                         </FormGroup>
-                        <Button type='submit'>Submit</Button>
+                        <Button type='submit' disabled={this.state.formSubmitted}>Submit</Button>
                     </Form>
                 </div>
             </div>
@@ -50,6 +51,8 @@ export default class RegionForm extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
+        this.setState({ formSubmitted : true });
+        setTimeout(() => this.setState({ formSubmitted: false }), 1000);
 
         const body = {
             name: this.state.name
