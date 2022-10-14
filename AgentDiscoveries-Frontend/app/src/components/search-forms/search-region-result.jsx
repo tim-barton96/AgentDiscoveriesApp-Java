@@ -1,6 +1,6 @@
 import * as React from 'react';
-// import {Panel, Button} from 'react-bootstrap';
-// import moment from 'moment';
+import {Panel, Button} from 'react-bootstrap';
+import moment from 'moment';
 
 export default class SearchRegionResult extends React.Component {
     render() {
@@ -14,41 +14,31 @@ export default class SearchRegionResult extends React.Component {
 
     renderResults(results) {
         return results.map((result) => {
+            const date = moment(result.reportTime).format('DD/MM/YYYY');
             return (
-                <p key={result.reportId}>something something good</p>
+                <Panel key={result.reportId}>
+                    <Panel.Heading>
+                        <p>Region Summary - {result.reportId} - {date}</p>
+                        <Button variant="outline-primary">PDF</Button>
+                    </Panel.Heading>
+                    <Panel.Body>{this.renderResultBody(result)}</Panel.Body>
+                </Panel>
             );
         });
     }
 
-    // renderResults(results) {
-    //     return results.map((result) => {
-    //         const date = moment(result.reportTime).format('DD/mm/YYYY');
-    //         return (
-    //             <Panel key={result.reportId}>
-    //                 <Panel.Heading>
-    //                     <p>Region Summary - {result.reportId} - {date}</p>
-    //                     <Button variant="outline-primary">PDF</Button>
-    //                 </Panel.Heading>
-    //                 <Panel.Body>{this.renderResultBody(result)}</Panel.Body>
-    //             </Panel>
-    //         );
-    //     });
-    // }
-
-    // renderResultBody(result) {
-    //     const time = moment(result.reportTime).format('LT');
-        
-    //     return (
-    //         <React.Fragment>
-    //             <div className='meta-info-container'>
-    //                 <p>Agent: {result.agentId}</p>
-    //                 <p>Status: {result.status}</p>
-    //                 <p>Time: {time}</p>
-    //             </div>
-    //             <p>{result.reportBody}</p>
-    //         </React.Fragment>
-    //     );
-    // }
+    renderResultBody(result) {
+        const time = moment(result.reportTime).format('LT');
+        return (
+            <React.Fragment>
+                <div className='meta-info-container'>
+                    <p>Agent: {result.agentId}</p>
+                    <p>Time: {time}</p>
+                </div>
+                <p>{result.reportBody}</p>
+            </React.Fragment>
+        );
+    }
 
     getResultsHeader(results) {
         return results.length > 0

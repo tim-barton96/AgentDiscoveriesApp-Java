@@ -14,7 +14,7 @@ export default class SearchLocationResult extends React.Component {
 
     renderResults(results) {
         return results.map((result) => {
-            const date = moment(result.reportTime).format('DD/mm/YYYY');
+            const date = moment(result.reportTime).format('DD/MM/YYYY');
             return (
                 <Panel key={result.reportId}>
                     <Panel.Heading>

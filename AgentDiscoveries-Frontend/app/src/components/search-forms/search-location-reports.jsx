@@ -54,7 +54,7 @@ export default class LocationReportsSearch extends React.Component {
                     <FormGroup>
                         <ControlLabel>Agent</ControlLabel>
                         <FormControl componentClass='select' required
-                            value={this.state.agent_id}
+                            value={this.state.agentId}
                             onChange={this.onAgentIdChange}
                             id='agent-select'>
                             <option value='' hidden>Choose an agent</option>
@@ -104,8 +104,9 @@ export default class LocationReportsSearch extends React.Component {
     onTitleChange(event){
         this.setState({ title: event.target.value });
     }
+    
     onLocationChange(event) {
-        this.setState({ locationId: parseInt(event.target.value) });
+        this.setState({ locationId: event.target.value });
     }
 
     onFromChange(event) {

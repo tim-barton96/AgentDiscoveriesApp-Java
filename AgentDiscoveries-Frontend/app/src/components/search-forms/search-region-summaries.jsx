@@ -23,7 +23,7 @@ export default class RegionSummariesSearch extends React.Component {
         };
 
         this.onRegionChange = this.onRegionChange.bind(this);
-        this.onAgentChange = this.onAgentChange.bind(this);
+        this.onAgentIdChange = this.onAgentIdChange.bind(this);
         this.onFromChange = this.onFromChange.bind(this);
         this.onToChange = this.onToChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -35,7 +35,7 @@ export default class RegionSummariesSearch extends React.Component {
             .catch(() => this.addMessage('Error fetching agents, please try again later', 'danger'));
 
         apiGet('regions')
-            .then(results => this.setState({regions: results}))
+            .then(results => this.setState({ regions: results }))
             .catch(() => this.addMessage('Error fetching regions, please try again later'));
     }
 
@@ -47,7 +47,6 @@ export default class RegionSummariesSearch extends React.Component {
 
                     <Message message={this.state.message} />
 
-                    
                     <FormGroup>
                         <ControlLabel>Region</ControlLabel>
                         <FormControl componentClass='select' required
@@ -56,14 +55,14 @@ export default class RegionSummariesSearch extends React.Component {
                             id='region-select'>
                             <option value='' hidden>Choose an region</option>
                             {this.state.regions.map(region => 
-                                <option key={region.regionId} value={region.regionId}>{region.name}</option>)}
+                                <option key={region.regionId} value={region.regionId}>{region.regionId} {region.name}</option>)}
                         </FormControl>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Agent</ControlLabel>
                         <FormControl componentClass='select' required
                             value={this.state.agentId}
-                            onChange={this.onAgentChange}
+                            onChange={this.onAgentIdChange}
                             id='agent-select'>
                             <option value='' hidden>Choose an agent</option>
                             {this.state.agents.map(agent => 
@@ -75,7 +74,6 @@ export default class RegionSummariesSearch extends React.Component {
                         <FormControl className='rm-3' type='date'
                             value={this.state.fromTime}
                             onChange={this.onFromChange}/>
-
                         <ControlLabel className='rm-3'>To</ControlLabel>
                         <FormControl className='rm-3' type='date'
                             value={this.state.toTime}
@@ -90,11 +88,11 @@ export default class RegionSummariesSearch extends React.Component {
     }
 
     onRegionChange(event) {
-        this.setState({ regionId: parseInt(event.target.value) });
+        this.setState({ regionId: event.target.value });
     }
 
-    onAgentChange(event) {
-        this.setState({ agentId: parseInt(event.target.value) });
+    onAgentIdChange(event) {
+        this.setState({ agentId: event.target.value });
     }
 
     onFromChange(event) {
