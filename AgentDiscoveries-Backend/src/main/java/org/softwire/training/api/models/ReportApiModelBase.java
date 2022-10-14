@@ -8,8 +8,8 @@ public class ReportApiModelBase {
     private int status;
     private ZonedDateTime reportTime;
     private String reportTitle;
-
-
+    private String attachmentName;
+    private String attachmentContent;
     private String reportBody;
     private int agentId;
 
@@ -61,10 +61,27 @@ public class ReportApiModelBase {
         this.agentId = agentId;
     }
 
+    public String getAttachmentName() {
+        return attachmentName;
+    }
+
+    public void setAttachmentName(String attachmentName) {
+        this.attachmentName = attachmentName;
+    }
+
+    public String getAttachmentContent() {
+        return attachmentContent;
+    }
+
+    public void setAttachmentContent(String attachmentContent) {
+        this.attachmentContent = attachmentContent;
+    }
+
     @Override
     public String toString() {
         return "ReportApiModelBase [reportId=" + reportId + ", status=" + status + ", reportTime=" + reportTime
-                + ", reportTitle=" + reportTitle + ", reportBody=" + reportBody + ", agentId=" + agentId + "]";
+                + ", reportTitle=" + reportTitle + ", reportBody=" + reportBody + ", agentId=" + agentId +
+                ", attachmentName=" + attachmentName + "]";
     }
 
     
