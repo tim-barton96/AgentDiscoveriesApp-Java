@@ -5,7 +5,6 @@ import org.softwire.training.models.Location;
 import org.softwire.training.models.LocationStatusReport;
 
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 /**

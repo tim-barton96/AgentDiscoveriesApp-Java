@@ -64,17 +64,20 @@ public class AgentDiscoveriesApplication implements Runnable {
 
             path("/api", () -> {
                 before("/*", tokenRoutes::validateToken);
+                before("/*", (request, response) -> response.type ("text/plain"));
 
-                path("/legacy", () -> {
-                    before("/*", (request, response) -> response.type("text/plain"));
-                    path("/executivesummary", this::executivesSummaryGroup);
-                });
+                //path("/legacy", () -> {
+                    //before("/*", (request, response) -> response.type("text/plain"));
+                    //path("/executivesummary", this::executivesSummaryGroup);
+                //});
 
+                path("/executivesummary", this::executivesSummaryGroup);
                 path("/pictures", this::picturesRouteGroup);
                 path("/agents", this::agentsRouteGroup);
                 path("/regions", this::regionsRouteGroup);
                 path("/reports/locationstatuses", () -> reportsRouteGroup(locationStatusReportsRoutes));
                 path("/reports/regionsummaries", () -> reportsRouteGroup(regionSummaryReportsRoutes));
+                //path("/reports/weeklyexecutivesummary", () -> reportsRouteGroup(weeklyExecutiveSummaryRoutes));
                 path("/external", this::externalRouteGroup);
 
                 setupBasicEntityCrudRoutes("/locations", locationsRoutes);
@@ -106,7 +109,7 @@ public class AgentDiscoveriesApplication implements Runnable {
     }
 
     private void executivesSummaryGroup() {
-        post("/generate", executiveSummaryRoutes::readExecutiveSummary);
+        get("", (req, res) -> executiveSummaryRoutes.readExecutiveSummary(req, res, req.queryParams("days")));
     }
 
     private void picturesRouteGroup() {

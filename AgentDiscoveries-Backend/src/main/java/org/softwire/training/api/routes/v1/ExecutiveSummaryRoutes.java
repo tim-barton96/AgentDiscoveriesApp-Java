@@ -10,6 +10,12 @@ import org.softwire.training.db.daos.RegionSummaryReportsDao;
 import org.softwire.training.db.daos.searchcriteria.FromTimeSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.ReportSearchCriterion;
 import org.softwire.training.models.*;
+
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import spark.Request;
 import spark.Response;
 
@@ -40,8 +46,8 @@ public class ExecutiveSummaryRoutes {
         this.locationsDao = locationsDao;
     }
 
-    public String readExecutiveSummary(Request req, Response res) {
-        int numberOfDays = Integer.parseInt(req.queryParams("days"));
+    public String readExecutiveSummary(Request req, Response res, String days) {
+        int numberOfDays = Integer.parseInt(days);
         ZonedDateTime fromTime = ZonedDateTime.now(ZoneOffset.UTC).minus(Period.ofDays(numberOfDays));
 
         List<LocationStatusReport> locationStatusReports = getLocationStatusReports(fromTime);
@@ -76,6 +82,18 @@ public class ExecutiveSummaryRoutes {
                     builder.appendLocationStatusReport(index.incrementAndGet(), report, agent, location);
                 });
 
-        return builder.toString();
+                Gson g = new Gson();  
+                StringBuilder jsonString = new StringBuilder();
+                jsonString.append("{");
+                jsonString.append("\"summary\"");
+                jsonString.append(":");
+                jsonString.append("\"");
+                jsonString.append(builder.toString());
+                jsonString.append("\"");
+                jsonString.append("}");
+                JsonParser parser = new JsonParser();
+                JsonObject JSONObject = parser.parse(jsonString.toString()).getAsJsonObject();
+                String result = JSONObject.toString();
+        return result;
     }
 }
