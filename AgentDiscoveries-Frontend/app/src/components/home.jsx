@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Redirect} from 'react-router-dom';
 import { apiGet } from './utilities/request-helper';
-import { currentDateTimeEULondon} from './utilities/user-helper';
+import {currentDateTimeEULondon} from './utilities/user-helper';
 
 
 export default class Home extends React.Component {
@@ -10,6 +10,7 @@ export default class Home extends React.Component {
         this.state = {
             currentDateTimeEULondon: currentDateTimeEULondon(),
             timeZones: [],
+            locations: [],
         };
         this.filterLocations = this.filterLocations.bind(this);
     }
@@ -22,6 +23,7 @@ export default class Home extends React.Component {
         results.forEach(result => {
             if (!this.state.timeZones.includes(result.timeZone)){
                 this.setState({timeZones:[...this.state.timeZones,result.timeZone]});
+                this.setState({locations:[...this.state.locations,result.location]});
             }
         });
     }
@@ -31,8 +33,8 @@ export default class Home extends React.Component {
                 {!this.props.isLoggedIn && this.renderLogInRedirect()}
                 {this.props.isAgent && this.renderAgentHome()}
                 {this.props.isAdmin && this.renderAdminHome()}
-                <h2>The Current time is:</h2>
-                {this.renderTimeZones(this.state.timeZones)}
+                <h2>The Current time in your location is: {this.state.currentDateTimeEULondon}</h2>
+                <h3>{this.state.locations}{this.renderTimeZones(this.state.timeZones)}</h3>
             </React.Fragment>
         );
     }
