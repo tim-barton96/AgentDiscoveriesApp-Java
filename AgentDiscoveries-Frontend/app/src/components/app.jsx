@@ -18,7 +18,7 @@ import LocationForm from './admin/location-form';
 import RegionForm from './admin/region-form';
 import UserForm from './admin/user-form';
 import Error from './error';
-import { clearUserInfo, isAdmin, isAgent, isLoggedIn } from './utilities/user-helper';
+import { clearUserInfo,isAdmin, isAgent, isLoggedIn } from './utilities/user-helper';
 
 
 export default class App extends React.Component {
@@ -53,8 +53,8 @@ export default class App extends React.Component {
         return (
             <React.Fragment>
                 <Router>
-                    <Switch>
-                        <Route path='/' exact render={() => <Page><Home /></Page>} />
+                    <Switch> 
+                        <Route path='/' exact render={() => <Page><Home isLoggedIn={this.state.isLoggedIn} isAdmin={this.state.isAdmin} isAgent={this.state.isAgent}/></Page>} />
                         <Route path='/login' render={() => <Page><Login /></Page>} />
                         {this.state.isLoggedIn && this.renderLoggedIn()}
                         <Route path='/error' render={() => <Page><Error/></Page>}/>
