@@ -5,6 +5,7 @@ import org.softwire.training.api.models.RegionSummaryReportApiModel;
 import org.softwire.training.db.daos.RegionSummaryReportsDao;
 import org.softwire.training.db.daos.UsersDao;
 import org.softwire.training.db.daos.searchcriteria.FromTimeSearchCriterion;
+import org.softwire.training.db.daos.searchcriteria.ToTimeSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.RegionIdSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.ReportSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.AgentIdSearchCriterion;
@@ -80,7 +81,7 @@ public class RegionSummaryReportsRoutes extends ReportsRoutesBase<RegionSummaryR
         }
 
         if (!isNullOrEmpty(queryMap.get("toTime").value())) {
-            apiReportSearchCriteria.add(new FromTimeSearchCriterion(ZonedDateTime.parse(queryMap.get("toTime").value())));
+            apiReportSearchCriteria.add(new ToTimeSearchCriterion(ZonedDateTime.parse(queryMap.get("toTime").value())));
         }
 
         if (!isNullOrEmpty(queryMap.get("reportTitle").value())) {
