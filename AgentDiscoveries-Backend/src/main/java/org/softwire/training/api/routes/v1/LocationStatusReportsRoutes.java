@@ -89,7 +89,7 @@ public class LocationStatusReportsRoutes extends ReportsRoutesBase<LocationStatu
         List<ReportSearchCriterion> searchCriteria = new ArrayList<>();
 
         if (!isNullOrEmpty(queryMap.get("agentId").value())) {
-            searchCriteria.add(new AgentIdSearchCriterion(queryMap.get("agentId").value()));
+            searchCriteria.add(new AgentIdSearchCriterion(queryMap.get("agentId").integerValue()));
         }
         
         if (!isNullOrEmpty(queryMap.get("title").value())) {

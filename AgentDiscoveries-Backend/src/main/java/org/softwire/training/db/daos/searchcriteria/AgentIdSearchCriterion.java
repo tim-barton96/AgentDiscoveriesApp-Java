@@ -6,9 +6,9 @@ import java.util.Map;
 public final class AgentIdSearchCriterion extends ReportSearchCriterion {
 
     private static final String AGENT_ID_BINDING_NAME = "agent_id_sc_agent_id";
-    private final String agentId;
+    private final int agentId;
 
-    public AgentIdSearchCriterion(String agentId) {
+    public AgentIdSearchCriterion(int agentId) {
         this.agentId = agentId;
     }
 

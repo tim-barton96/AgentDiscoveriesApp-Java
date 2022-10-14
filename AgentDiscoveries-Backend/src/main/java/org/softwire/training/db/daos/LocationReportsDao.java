@@ -62,7 +62,6 @@ public class LocationReportsDao implements ReportsDao<LocationStatusReport> {
                      query.bind(bindingEntry.getKey(), bindingEntry.getValue());
                  }
              }
-
              return query.mapToBean(LocationStatusReport.class).list();
         }
     }

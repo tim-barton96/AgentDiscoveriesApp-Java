@@ -3,7 +3,7 @@ import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstra
 import QueryString from 'query-string';
 import moment from 'moment';
 import Message from '../message';
-import SearchResult from './search-result';
+import SearchLocationResult from './search-location-result';
 import {apiGet} from '../utilities/request-helper';
 
 export default class LocationReportsSearch extends React.Component {
@@ -54,7 +54,7 @@ export default class LocationReportsSearch extends React.Component {
                     <FormGroup>
                         <ControlLabel>Agent</ControlLabel>
                         <FormControl componentClass='select' required
-                            value={this.state.agent_id}
+                            value={this.state.agentId}
                             onChange={this.onAgentIdChange}
                             id='agent-select'>
                             <option value='' hidden>Choose an agent</option>
@@ -93,7 +93,7 @@ export default class LocationReportsSearch extends React.Component {
                     </FormGroup>
                     <Button type='submit'>Search</Button>
                 </Form>
-                <SearchResult results={this.state.results} />
+                <SearchLocationResult results={this.state.results} />
             </div>
         );
     }
@@ -104,8 +104,9 @@ export default class LocationReportsSearch extends React.Component {
     onTitleChange(event){
         this.setState({ title: event.target.value });
     }
+    
     onLocationChange(event) {
-        this.setState({ locationId: parseInt(event.target.value) });
+        this.setState({ locationId: event.target.value });
     }
 
     onFromChange(event) {

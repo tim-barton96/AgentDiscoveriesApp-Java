@@ -5,9 +5,10 @@ import org.softwire.training.api.models.RegionSummaryReportApiModel;
 import org.softwire.training.db.daos.RegionSummaryReportsDao;
 import org.softwire.training.db.daos.UsersDao;
 import org.softwire.training.db.daos.searchcriteria.FromTimeSearchCriterion;
+import org.softwire.training.db.daos.searchcriteria.ToTimeSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.RegionIdSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.ReportSearchCriterion;
-import org.softwire.training.db.daos.searchcriteria.UserIdSearchCriterion;
+import org.softwire.training.db.daos.searchcriteria.AgentIdSearchCriterion;
 import org.softwire.training.db.daos.searchcriteria.ReportTitleSearchCriterion;
 import org.softwire.training.models.RegionSummaryReport;
 import spark.QueryParamsMap;
@@ -71,8 +72,8 @@ public class RegionSummaryReportsRoutes extends ReportsRoutesBase<RegionSummaryR
             apiReportSearchCriteria.add(new RegionIdSearchCriterion(queryMap.get("regionId").integerValue()));
         }
 
-        if (!isNullOrEmpty(queryMap.get("userId").value())) {
-            apiReportSearchCriteria.add(new UserIdSearchCriterion(queryMap.get("userId").integerValue()));
+        if (!isNullOrEmpty(queryMap.get("agentId").value())) {
+            apiReportSearchCriteria.add(new AgentIdSearchCriterion(queryMap.get("agentId").integerValue()));
         }
 
         if (!isNullOrEmpty(queryMap.get("fromTime").value())) {
@@ -80,7 +81,7 @@ public class RegionSummaryReportsRoutes extends ReportsRoutesBase<RegionSummaryR
         }
 
         if (!isNullOrEmpty(queryMap.get("toTime").value())) {
-            apiReportSearchCriteria.add(new FromTimeSearchCriterion(ZonedDateTime.parse(queryMap.get("toTime").value())));
+            apiReportSearchCriteria.add(new ToTimeSearchCriterion(ZonedDateTime.parse(queryMap.get("toTime").value())));
         }
 
         if (!isNullOrEmpty(queryMap.get("reportTitle").value())) {

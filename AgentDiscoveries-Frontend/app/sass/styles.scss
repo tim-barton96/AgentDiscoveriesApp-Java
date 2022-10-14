@@ -78,6 +78,27 @@ body {
   opacity: 0.8;
 }
 
+
+.panel {
+  .panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    p {
+      margin: 5px 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+  .panel-body{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .panel-body::before, .panel-body::after {
+    display: none;
+  }
+}
+
 input[type=number]:invalid:focus {
   border: 1px solid red;
 }
@@ -94,7 +115,3 @@ input[type=number]:not(:placeholder-shown):invalid{
   border: 1px solid red;
 }
 
-.panel-body {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Button, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import Message from '../message';
-import SearchResult from './search-result';
+import SearchRegionResult from './search-region-result';
 import moment from 'moment/moment';
 import QueryString from 'query-string';
 import {apiGet} from '../utilities/request-helper';
@@ -12,30 +12,30 @@ export default class RegionSummariesSearch extends React.Component {
 
         this.state = {
             regionId: '',
-            userId: '',
+            agentId: '',
             fromTime: '',
             toTime: '',
 
             results: [],
             message: {},
             regions: [],
-            users: []
+            agents: []
         };
 
         this.onRegionChange = this.onRegionChange.bind(this);
-        this.onUserChange = this.onUserChange.bind(this);
+        this.onAgentIdChange = this.onAgentIdChange.bind(this);
         this.onFromChange = this.onFromChange.bind(this);
         this.onToChange = this.onToChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentDidMount() {
-        apiGet('users')
-            .then(results => this.setState({ users: results }))
-            .catch(() => this.addMessage('Error fetching users, please try again later', 'danger'));
+        apiGet('agents')
+            .then(results => this.setState({ agents: results }))
+            .catch(() => this.addMessage('Error fetching agents, please try again later', 'danger'));
 
         apiGet('regions')
-            .then(results => this.setState({regions: results}))
+            .then(results => this.setState({ regions: results }))
             .catch(() => this.addMessage('Error fetching regions, please try again later'));
     }
 
@@ -47,7 +47,6 @@ export default class RegionSummariesSearch extends React.Component {
 
                     <Message message={this.state.message} />
 
-                    
                     <FormGroup>
                         <ControlLabel>Region</ControlLabel>
                         <FormControl componentClass='select' required
@@ -56,18 +55,18 @@ export default class RegionSummariesSearch extends React.Component {
                             id='region-select'>
                             <option value='' hidden>Choose an region</option>
                             {this.state.regions.map(region => 
-                                <option key={region.regionId} value={region.regionId}>{region.name}</option>)}
+                                <option key={region.regionId} value={region.regionId}>{region.regionId} {region.name}</option>)}
                         </FormControl>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>User</ControlLabel>
+                        <ControlLabel>Agent</ControlLabel>
                         <FormControl componentClass='select' required
-                            value={this.state.userId}
-                            onChange={this.onUserChange}
-                            id='user-select'>
-                            <option value='' hidden>Choose an user</option>
-                            {this.state.users.map(user => 
-                                <option key={user.userId} value={user.userId}>{user.userId} {user.username}</option>)}
+                            value={this.state.agentId}
+                            onChange={this.onAgentIdChange}
+                            id='agent-select'>
+                            <option value='' hidden>Choose an agent</option>
+                            {this.state.agents.map(agent => 
+                                <option key={agent.agentId} value={agent.agentId}>{agent.agentId} {agent.callSign}</option>)}
                         </FormControl>
                     </FormGroup>
                     <FormGroup className='form-inline'>
@@ -75,7 +74,6 @@ export default class RegionSummariesSearch extends React.Component {
                         <FormControl className='rm-3' type='date'
                             value={this.state.fromTime}
                             onChange={this.onFromChange}/>
-
                         <ControlLabel className='rm-3'>To</ControlLabel>
                         <FormControl className='rm-3' type='date'
                             value={this.state.toTime}
@@ -84,17 +82,17 @@ export default class RegionSummariesSearch extends React.Component {
                     <Button type='submit'>Search</Button>
                 </Form>
 
-                <SearchResult results={this.state.results} />
+                <SearchRegionResult results={this.state.results} />
             </div>
         );
     }
 
     onRegionChange(event) {
-        this.setState({ regionId: parseInt(event.target.value) });
+        this.setState({ regionId: event.target.value });
     }
 
-    onUserChange(event) {
-        this.setState({ userId: parseInt(event.target.value) });
+    onAgentIdChange(event) {
+        this.setState({ agentId: event.target.value });
     }
 
     onFromChange(event) {
@@ -110,7 +108,7 @@ export default class RegionSummariesSearch extends React.Component {
 
         const params = {
             regionId: this.state.regionId,
-            userId: this.state.userId,
+            agentId: this.state.agentId,
             fromTime: this.state.fromTime && moment.utc(this.state.fromTime).startOf('day').toISOString(),
             toTime: this.state.toTime && moment.utc(this.state.toTime).endOf('day').toISOString()
         };
