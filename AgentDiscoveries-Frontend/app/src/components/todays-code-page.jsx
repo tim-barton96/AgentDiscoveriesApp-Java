@@ -52,10 +52,10 @@ export default class TodaysCodePage extends React.Component {
 
                 <div id="code-result">
                     {this.state.result ? <h3>Result</h3> : ''}
-                    {this.state.result}
-                    <Form>
+                    {this.state.result ? <textarea value={this.state.result} rows='4' className='form-control' ></textarea> : ''}
+                    {this.state.result ? <Form>
                         <Button className='rm-3' onClick={() =>  navigator.clipboard.writeText(this.state.result)} disabled={!this.state.result}>Copy result</Button>
-                    </Form>
+                    </Form> : ''}
                 </div>
                 
             </div>
